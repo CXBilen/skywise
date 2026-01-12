@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=375, height=812">
+  <title>SkyWise - Email Import</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      width: 375px;
+      height: 812px;
+      background: #f8fafc;
+      display: flex;
+      flex-direction: column;
+    }
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 20px;
+      background: rgba(255, 255, 255, 0.9);
+      border-bottom: 1px solid #e2e8f0;
+    }
+    .logo {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .logo svg {
+      width: 22px;
+      height: 22px;
+      color: white;
+    }
+    .header h1 {
+      font-size: 17px;
+      font-weight: 600;
+      color: #0f172a;
+    }
+    .chat-area {
+      flex: 1;
+      padding: 16px;
+      overflow-y: auto;
+    }
+    .message {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .avatar {
+      width: 28px;
+      height: 28px;
+      background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .avatar svg {
+      width: 14px;
+      height: 14px;
+      color: white;
+    }
+    .bubble {
+      background: white;
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      border-top-left-radius: 4px;
+      padding: 12px 14px;
+      max-width: 280px;
+    }
+    .bubble p {
+      font-size: 14px;
+      color: #1e293b;
+      line-height: 1.5;
+    }
+    .import-card {
+      margin-left: 36px;
+      margin-top: 12px;
+      background: white;
+      border: 2px solid #fde68a;
+      border-radius: 16px;
+      overflow: hidden;
+    }
+    .import-header {
+      background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .import-header svg {
+      width: 18px;
+      height: 18px;
+      color: #92400e;
+    }
+    .import-header-text h3 {
+      font-size: 13px;
+      font-weight: 600;
+      color: #92400e;
+    }
+    .import-header-text p {
+      font-size: 11px;
+      color: #a16207;
+    }
+    .review-badge {
+      margin-left: auto;
+      padding: 4px 10px;
+      background: #fef9c3;
+      border-radius: 6px;
+      font-size: 10px;
+      font-weight: 500;
+      color: #a16207;
+    }
+    .import-body {
+      padding: 14px 16px;
+    }
+    .data-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid #f1f5f9;
+    }
+    .data-row:last-of-type {
+      border-bottom: none;
+    }
+    .data-label {
+      font-size: 13px;
+      color: #64748b;
+    }
+    .data-value {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .data-value span {
+      font-size: 14px;
+      font-weight: 500;
+      color: #0f172a;
+    }
+    .confidence-high {
+      color: #16a34a;
+      font-size: 12px;
+    }
+    .data-row.low-confidence {
+      background: #fef9c3;
+      margin: 0 -16px;
+      padding: 10px 16px;
+      border-bottom: none;
+    }
+    .data-row.low-confidence .data-label {
+      color: #92400e;
+    }
+    .data-row.low-confidence .data-value span {
+      color: #92400e;
+    }
+    .check-badge {
+      padding: 2px 8px;
+      background: #fde68a;
+      border-radius: 4px;
+      font-size: 10px;
+      font-weight: 500;
+      color: #a16207;
+    }
+    .warning-note {
+      margin: 12px 0;
+      padding: 10px 12px;
+      background: #fef9c3;
+      border-radius: 8px;
+    }
+    .warning-note p {
+      font-size: 12px;
+      color: #92400e;
+      line-height: 1.4;
+    }
+    .import-actions {
+      display: flex;
+      gap: 8px;
+      padding: 0 16px 16px;
+    }
+    .btn {
+      flex: 1;
+      padding: 12px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+    .btn-ghost {
+      background: white;
+      border: 1px solid #e2e8f0;
+      color: #64748b;
+    }
+    .btn-outline {
+      background: white;
+      border: 1px solid #e2e8f0;
+      color: #475569;
+    }
+    .btn-primary {
+      flex: 1.5;
+      background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+      border: none;
+      color: white;
+      box-shadow: 0 4px 12px -4px rgba(14, 165, 233, 0.5);
+    }
+    .input-area {
+      padding: 12px 16px 34px;
+      background: white;
+      border-top: 1px solid #e2e8f0;
+    }
+    .input-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 24px;
+      padding: 6px 6px 6px 16px;
+    }
+    .input-container input {
+      flex: 1;
+      border: none;
+      background: transparent;
+      font-size: 14px;
+      outline: none;
+    }
+    .input-container input::placeholder {
+      color: #94a3b8;
+    }
+    .send-btn {
+      width: 36px;
+      height: 36px;
+      background: #e2e8f0;
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="logo">
+      <svg viewBox="0 0 24 24" fill="currentColor">
+        <path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/>
+      </svg>
+    </div>
+    <h1>SkyWise</h1>
+  </header>
+  
+  <div class="chat-area">
+    <div class="message">
+      <div class="avatar">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/>
+        </svg>
+      </div>
+      <div class="bubble">
+        <p>I found a flight confirmation in your email. Here's what I extracted:</p>
+      </div>
+    </div>
+    
+    <div class="import-card">
+      <div class="import-header">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="2" y="4" width="20" height="16" rx="2"/>
+          <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+        </svg>
+        <div class="import-header-text">
+          <h3>Found in your email</h3>
+          <p>Delta Airlines</p>
+        </div>
+        <span class="review-badge">⚠ Review</span>
+      </div>
+      
+      <div class="import-body">
+        <div class="data-row">
+          <span class="data-label">Airline</span>
+          <div class="data-value">
+            <span>Delta</span>
+            <span class="confidence-high">✓</span>
+          </div>
+        </div>
+        <div class="data-row">
+          <span class="data-label">Flight</span>
+          <div class="data-value">
+            <span>DL 1247</span>
+            <span class="confidence-high">✓</span>
+          </div>
+        </div>
+        <div class="data-row">
+          <span class="data-label">Date</span>
+          <div class="data-value">
+            <span>April 5, 2025</span>
+            <span class="confidence-high">✓</span>
+          </div>
+        </div>
+        <div class="data-row low-confidence">
+          <span class="data-label">Departure</span>
+          <div class="data-value">
+            <span>8:00 AM</span>
+            <span class="check-badge">Check</span>
+          </div>
+        </div>
+        <div class="data-row">
+          <span class="data-label">Route</span>
+          <div class="data-value">
+            <span>JFK → LAX</span>
+            <span class="confidence-high">✓</span>
+          </div>
+        </div>
+        
+        <div class="warning-note">
+          <p>I'm not 100% certain about the departure time. Please verify before adding to your calendar.</p>
+        </div>
+      </div>
+      
+      <div class="import-actions">
+        <button class="btn btn-ghost">Dismiss</button>
+        <button class="btn btn-outline">Edit</button>
+        <button class="btn btn-primary">Add to Calendar</button>
+      </div>
+    </div>
+  </div>
+  
+  <div class="input-area">
+    <div class="input-container">
+      <input type="text" placeholder="Type a message...">
+      <button class="send-btn"></button>
+    </div>
+  </div>
+</body>
+</html>

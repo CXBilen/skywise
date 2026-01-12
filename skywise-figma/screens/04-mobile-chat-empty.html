@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=375, height=812">
+  <title>SkyWise - Chat</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      width: 375px;
+      height: 812px;
+      background: #f8fafc;
+      display: flex;
+      flex-direction: column;
+    }
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 20px;
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid #e2e8f0;
+    }
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .logo {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px -4px rgba(14, 165, 233, 0.4);
+    }
+    .logo svg {
+      width: 22px;
+      height: 22px;
+      color: white;
+    }
+    .header-title {
+      display: flex;
+      flex-direction: column;
+    }
+    .header-title h1 {
+      font-size: 17px;
+      font-weight: 600;
+      color: #0f172a;
+    }
+    .header-title span {
+      font-size: 12px;
+      color: #64748b;
+    }
+    .settings-btn {
+      width: 36px;
+      height: 36px;
+      background: #f1f5f9;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      cursor: pointer;
+    }
+    .settings-btn svg {
+      width: 20px;
+      height: 20px;
+      color: #64748b;
+    }
+    .chat-area {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+    }
+    .message {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .avatar {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .avatar svg {
+      width: 16px;
+      height: 16px;
+      color: white;
+    }
+    .bubble {
+      background: white;
+      border: 1px solid #e2e8f0;
+      border-radius: 18px;
+      border-top-left-radius: 4px;
+      padding: 14px 16px;
+      max-width: 280px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+    .bubble p {
+      font-size: 15px;
+      color: #1e293b;
+      line-height: 1.5;
+    }
+    .suggestions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-left: 42px;
+      margin-top: 8px;
+    }
+    .chip {
+      padding: 10px 16px;
+      background: white;
+      border: 2px solid #bae6fd;
+      border-radius: 24px;
+      font-size: 14px;
+      color: #0284c7;
+      font-weight: 500;
+      cursor: pointer;
+    }
+    .input-area {
+      padding: 16px 20px;
+      background: white;
+      border-top: 1px solid #e2e8f0;
+    }
+    .input-container {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 28px;
+      padding: 8px 8px 8px 18px;
+    }
+    .input-container input {
+      flex: 1;
+      border: none;
+      background: transparent;
+      font-size: 15px;
+      color: #0f172a;
+      outline: none;
+    }
+    .input-container input::placeholder {
+      color: #94a3b8;
+    }
+    .attach-btn {
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+    .attach-btn svg {
+      width: 20px;
+      height: 20px;
+      color: #94a3b8;
+    }
+    .send-btn {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 4px 12px -4px rgba(14, 165, 233, 0.5);
+    }
+    .send-btn svg {
+      width: 18px;
+      height: 18px;
+      color: white;
+    }
+    .home-indicator {
+      width: 134px;
+      height: 5px;
+      background: #0f172a;
+      border-radius: 3px;
+      margin: 8px auto 8px;
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="header-left">
+      <div class="logo">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/>
+        </svg>
+      </div>
+      <div class="header-title">
+        <h1>SkyWise</h1>
+        <span>Travel Assistant</span>
+      </div>
+    </div>
+    <button class="settings-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="3"/>
+        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+      </svg>
+    </button>
+  </header>
+  
+  <div class="chat-area">
+    <div class="message">
+      <div class="avatar">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/>
+        </svg>
+      </div>
+      <div class="bubble">
+        <p>Hi! I'm your travel assistant. I can help you find and book flights that fit your schedule. What's your next trip?</p>
+      </div>
+    </div>
+    
+    <div class="suggestions">
+      <div class="chip">Book a flight</div>
+      <div class="chip">Import from email</div>
+      <div class="chip">Show my trips</div>
+    </div>
+  </div>
+  
+  <div class="input-area">
+    <div class="input-container">
+      <button class="attach-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/>
+        </svg>
+      </button>
+      <input type="text" placeholder="Where do you want to fly?">
+      <button class="send-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="m22 2-7 20-4-9-9-4Z"/>
+          <path d="M22 2 11 13"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+  
+  <div class="home-indicator"></div>
+</body>
+</html>

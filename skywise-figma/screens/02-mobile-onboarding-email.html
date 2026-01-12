@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=375, height=812">
+  <title>SkyWise - Email Permission</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      width: 375px;
+      height: 812px;
+      background: linear-gradient(180deg, #f0f9ff 0%, #ffffff 50%, #fffbeb 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 48px 32px;
+    }
+    .progress-dots {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 48px;
+    }
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 4px;
+      background: #e2e8f0;
+    }
+    .dot.complete {
+      background: #94a3b8;
+    }
+    .dot.active {
+      width: 32px;
+      background: #0ea5e9;
+    }
+    .icon-container {
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+      border-radius: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 20px 40px -12px rgba(245, 158, 11, 0.4);
+      margin-bottom: 32px;
+    }
+    .icon-container svg {
+      width: 40px;
+      height: 40px;
+      color: white;
+    }
+    h1 {
+      font-size: 28px;
+      font-weight: 700;
+      color: #0f172a;
+      text-align: center;
+      margin-bottom: 12px;
+    }
+    .subtitle {
+      font-size: 16px;
+      color: #64748b;
+      text-align: center;
+      line-height: 1.5;
+      margin-bottom: 32px;
+    }
+    .permissions {
+      background: #f8fafc;
+      border-radius: 16px;
+      padding: 20px;
+      width: 100%;
+      margin-bottom: 16px;
+    }
+    .permission {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .permission:last-child {
+      margin-bottom: 0;
+    }
+    .check {
+      width: 20px;
+      height: 20px;
+      color: #10b981;
+      flex-shrink: 0;
+    }
+    .permission span {
+      font-size: 14px;
+      color: #475569;
+      line-height: 1.5;
+    }
+    .privacy-note {
+      font-size: 12px;
+      color: #94a3b8;
+      text-align: center;
+      margin-bottom: 24px;
+    }
+    .btn-primary {
+      width: 100%;
+      padding: 18px 32px;
+      background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+      border: none;
+      border-radius: 14px;
+      color: white;
+      font-size: 16px;
+      font-weight: 600;
+      box-shadow: 0 8px 24px -8px rgba(14, 165, 233, 0.5);
+      cursor: pointer;
+      margin-bottom: 12px;
+    }
+    .btn-secondary {
+      width: 100%;
+      padding: 14px 32px;
+      background: transparent;
+      border: none;
+      color: #64748b;
+      font-size: 15px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="progress-dots">
+    <div class="dot complete"></div>
+    <div class="dot active"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+  </div>
+  
+  <div class="icon-container">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <rect x="2" y="4" width="20" height="16" rx="2"/>
+      <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+    </svg>
+  </div>
+  
+  <h1>Connect Your Email</h1>
+  <p class="subtitle">I'll scan for flight confirmations so you don't have to copy-paste details manually.</p>
+  
+  <div class="permissions">
+    <div class="permission">
+      <svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M20 6 9 17l-5-5"/>
+      </svg>
+      <span>Read-only access—I can't send or delete emails</span>
+    </div>
+    <div class="permission">
+      <svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M20 6 9 17l-5-5"/>
+      </svg>
+      <span>Only looks for flight-related emails</span>
+    </div>
+    <div class="permission">
+      <svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M20 6 9 17l-5-5"/>
+      </svg>
+      <span>You review everything before it's added</span>
+    </div>
+    <div class="permission">
+      <svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M20 6 9 17l-5-5"/>
+      </svg>
+      <span>Disconnect anytime in settings</span>
+    </div>
+  </div>
+  
+  <p class="privacy-note">Your email data is processed securely and never shared.</p>
+  
+  <button class="btn-primary">Connect Email</button>
+  <button class="btn-secondary">Skip for now</button>
+</body>
+</html>

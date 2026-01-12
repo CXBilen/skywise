@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=375, height=812">
+  <title>SkyWise - Trip Summary</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      width: 375px;
+      height: 812px;
+      background: #f8fafc;
+      position: relative;
+    }
+    .dimmed-bg {
+      position: absolute;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.5);
+    }
+    .bottom-sheet {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: white;
+      border-radius: 28px 28px 0 0;
+      box-shadow: 0 -20px 60px rgba(0, 0, 0, 0.15);
+      padding-bottom: 34px;
+    }
+    .handle {
+      width: 40px;
+      height: 5px;
+      background: #e2e8f0;
+      border-radius: 3px;
+      margin: 12px auto 16px;
+    }
+    .sheet-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px 16px;
+    }
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .trip-icon {
+      width: 48px;
+      height: 48px;
+      background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 20px -8px rgba(14, 165, 233, 0.5);
+    }
+    .trip-icon svg {
+      width: 24px;
+      height: 24px;
+      color: white;
+    }
+    .trip-title {
+      font-size: 17px;
+      font-weight: 600;
+      color: #0f172a;
+    }
+    .trip-route {
+      font-size: 13px;
+      color: #64748b;
+    }
+    .price-total {
+      text-align: right;
+    }
+    .price-amount {
+      font-size: 22px;
+      font-weight: 700;
+      color: #0f172a;
+    }
+    .price-label {
+      font-size: 12px;
+      color: #64748b;
+    }
+    .flights-container {
+      padding: 0 20px;
+    }
+    .flight-leg {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      padding: 14px;
+      margin-bottom: 10px;
+    }
+    .leg-header {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+    .leg-header svg {
+      width: 14px;
+      height: 14px;
+      color: #64748b;
+    }
+    .leg-label {
+      font-size: 12px;
+      font-weight: 500;
+      color: #64748b;
+    }
+    .leg-date {
+      font-size: 12px;
+      color: #94a3b8;
+    }
+    .leg-times {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+    .leg-time {
+      font-size: 16px;
+      font-weight: 600;
+      color: #0f172a;
+    }
+    .leg-arrow {
+      font-size: 12px;
+      color: #94a3b8;
+    }
+    .leg-details {
+      font-size: 12px;
+      color: #64748b;
+    }
+    .calendar-section {
+      padding: 16px 20px;
+    }
+    .calendar-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .calendar-header svg {
+      width: 16px;
+      height: 16px;
+      color: #0ea5e9;
+    }
+    .calendar-header span {
+      font-size: 13px;
+      font-weight: 600;
+      color: #475569;
+    }
+    .calendar-event {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px;
+      background: #f0f9ff;
+      border-radius: 10px;
+      margin-bottom: 8px;
+    }
+    .event-bar {
+      width: 4px;
+      height: 32px;
+      background: #0ea5e9;
+      border-radius: 2px;
+    }
+    .event-title {
+      font-size: 13px;
+      font-weight: 500;
+      color: #0f172a;
+    }
+    .event-time {
+      font-size: 12px;
+      color: #64748b;
+    }
+    .actions {
+      display: flex;
+      gap: 10px;
+      padding: 16px 20px 0;
+    }
+    .btn {
+      flex: 1;
+      padding: 14px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+    .btn-ghost {
+      background: transparent;
+      border: none;
+      color: #64748b;
+    }
+    .btn-outline {
+      background: white;
+      border: 1px solid #e2e8f0;
+      color: #475569;
+    }
+    .btn-primary {
+      flex: 2;
+      background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+      border: none;
+      color: white;
+      box-shadow: 0 8px 20px -8px rgba(14, 165, 233, 0.5);
+    }
+    .btn svg {
+      width: 16px;
+      height: 16px;
+    }
+  </style>
+</head>
+<body>
+  <div class="dimmed-bg"></div>
+  
+  <div class="bottom-sheet">
+    <div class="handle"></div>
+    
+    <div class="sheet-header">
+      <div class="header-left">
+        <div class="trip-icon">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/>
+          </svg>
+        </div>
+        <div>
+          <div class="trip-title">Trip to San Francisco</div>
+          <div class="trip-route">JFK → SFO → JFK</div>
+        </div>
+      </div>
+      <div class="price-total">
+        <div class="price-amount">$578</div>
+        <div class="price-label">Total</div>
+      </div>
+    </div>
+    
+    <div class="flights-container">
+      <div class="flight-leg">
+        <div class="leg-header">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/>
+          </svg>
+          <span class="leg-label">Outbound</span>
+          <span class="leg-date">• Tue, Jan 21</span>
+        </div>
+        <div class="leg-times">
+          <span class="leg-time">11:30a JFK</span>
+          <span class="leg-arrow">→</span>
+          <span class="leg-time">2:45p SFO</span>
+        </div>
+        <div class="leg-details">United UA 442 • 6h 15m</div>
+      </div>
+      
+      <div class="flight-leg">
+        <div class="leg-header">
+          <svg viewBox="0 0 24 24" fill="currentColor" style="transform: scaleX(-1)">
+            <path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/>
+          </svg>
+          <span class="leg-label">Return</span>
+          <span class="leg-date">• Thu, Jan 23</span>
+        </div>
+        <div class="leg-times">
+          <span class="leg-time">5:15p SFO</span>
+          <span class="leg-arrow">→</span>
+          <span class="leg-time">1:30a JFK</span>
+        </div>
+        <div class="leg-details">United UA 443 • 5h 15m</div>
+      </div>
+    </div>
+    
+    <div class="calendar-section">
+      <div class="calendar-header">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="4" width="18" height="18" rx="2"/>
+          <line x1="16" y1="2" x2="16" y2="6"/>
+          <line x1="8" y1="2" x2="8" y2="6"/>
+          <line x1="3" y1="10" x2="21" y2="10"/>
+        </svg>
+        <span>What I'll add to your calendar</span>
+      </div>
+      <div class="calendar-event">
+        <div class="event-bar"></div>
+        <div>
+          <div class="event-title">Flight to San Francisco</div>
+          <div class="event-time">Tue 11:30a - 2:45p</div>
+        </div>
+      </div>
+      <div class="calendar-event">
+        <div class="event-bar"></div>
+        <div>
+          <div class="event-title">Flight home</div>
+          <div class="event-time">Thu 5:15p - 1:30a</div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="actions">
+      <button class="btn btn-ghost">Cancel</button>
+      <button class="btn btn-outline">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+          <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+        </svg>
+        Edit
+      </button>
+      <button class="btn btn-primary">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+        Confirm Booking
+      </button>
+    </div>
+  </div>
+</body>
+</html>
