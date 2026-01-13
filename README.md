@@ -2,8 +2,6 @@
 
 A Next.js application demonstrating an AI-powered airplane reservation chatbot with email and calendar integration. This is a fully functional case study implementation showcasing modern UX patterns for conversational AI interfaces.
 
-![SkyWise Demo](./docs/demo.png)
-
 ## 🎯 Project Overview
 
 SkyWise is a conversational travel assistant that helps users:
