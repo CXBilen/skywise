@@ -197,4 +197,5 @@ This document maps the SkyWise case study requirements to their implementations 
 | Version | Date | Changes |
 |---------|------|---------|
 | 0.0.1 | Initial | Basic chat UI, mock APIs |
-| 0.0.2 | Current | NLP, error handling, undo, trust, mobile, demo |
+| 0.0.2 | - | NLP, error handling, undo, trust, mobile, demo |
+| 0.0.3 | Current | Confidence microcopy, recovery flows, enhanced undo UX, 20 Figma screens (10 mobile + 10 desktop) |

@@ -32,6 +32,7 @@ The AI layer handles diverse user inputs through:
 - **Intent Parser** (`/lib/ai/intent-parser.ts`): Detects user intent and extracts entities (dates, locations, passengers).
 - **Conversation Context** (`/lib/ai/conversation-context.ts`): Maintains multi-turn conversation state.
 - **Response Generator** (`/lib/ai/response-generator.ts`): Produces natural, consistent responses.
+- **Misunderstanding Scenarios** (`/lib/ai/misunderstanding-scenarios.ts`): Pre-defined recovery flows for ambiguous inputs.
 
 ### 3. Progressive Information Collection
 
@@ -294,6 +295,13 @@ Design tokens are centralized in `/lib/design-tokens.ts`:
 - `PermissionExplainer`: Shows what access is granted
 - `DataUsageIndicator`: Real-time data access status
 - `ConfirmationCheckbox`: Explicit consent UI
+
+### v0.0.3 Components
+
+- `ConfidenceIndicator`: Shows AI confidence levels with contextual explanations
+- `RecoveryPrompt`: Handles AI misunderstandings with correction options
+- `InlineUndoPrompt`: Context-aware undo prompts within chat
+- `UndoActionPreview`: Enhanced undo with affected items list
 
 ## State Management
 

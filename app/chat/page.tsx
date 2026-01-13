@@ -1,5 +1,15 @@
 "use client";
 
+/**
+ * CHAT PAGE - Main Conversation Interface
+ *
+ * This page demonstrates:
+ * 1. AI confidence transparency - Shows when AI is uncertain
+ * 2. Recovery flows - Handles AI misunderstandings gracefully
+ * 3. Undo architecture - All actions are reversible
+ * 4. Progressive disclosure - Information revealed as needed
+ */
+
 import { useState, useRef, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -15,6 +25,9 @@ import { BottomSheet } from "@/components/layout/bottom-sheet";
 import { ChatMessage } from "@/components/chat/chat-message";
 import { ChatInput } from "@/components/chat/chat-input";
 import { QuickReplyChips } from "@/components/chat/quick-reply-chips";
+import { ConfidenceIndicator, getConfidenceLevel } from "@/components/chat/confidence-indicator";
+import { RecoveryPrompt } from "@/components/chat/recovery-prompt";
+import { InlineUndoPrompt } from "@/components/chat/inline-undo-prompt";
 import { FlightCard } from "@/components/flights/flight-card";
 import { TripSummaryCard } from "@/components/flights/trip-summary-card";
 import { ImportedTripCard } from "@/components/flights/imported-trip-card";
@@ -24,6 +37,10 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
 import { useChatState, FlightOption } from "@/hooks/use-chat-state";
 import { useToast } from "@/hooks/use-toast";
+import {
+  checkForMisunderstandingTrigger,
+  type MisunderstandingScenario,
+} from "@/lib/ai/misunderstanding-scenarios";
 
 // Mock flight data
 const mockFlightOptions: FlightOption[] = [
@@ -92,6 +109,9 @@ export default function ChatPage() {
   const [selectedFlightId, setSelectedFlightId] = useState<string | null>(null);
   const [isMobile, setIsMobile] = useState(false);
   const [showImportDemo, setShowImportDemo] = useState(false);
+  const [activeRecovery, setActiveRecovery] = useState<MisunderstandingScenario | null>(null);
+  const [showInlineUndo, setShowInlineUndo] = useState(false);
+  const [undoActionType, setUndoActionType] = useState<"calendar_add" | "booking_confirm" | "email_import">("calendar_add");
 
   // Check if mobile
   useEffect(() => {
@@ -346,10 +366,88 @@ export default function ChatPage() {
     );
   }, [addMessage, showPanel, closePanel, simulateTyping]);
 
+  // Recovery flow handlers
+  const handleRecoveryConfirm = useCallback(() => {
+    setActiveRecovery(null);
+    simulateTyping(() => {
+      addMessage(
+        "assistant",
+        "Great! Let me search for flights with those details..."
+      );
+      setConversationState({
+        ...conversationState,
+        step: "searching",
+      });
+      // Simulate search delay then show results
+      setTimeout(() => {
+        setIsTyping(false);
+        addMessage(
+          "assistant",
+          "Here are 3 options that fit your schedule:"
+        );
+        setConversationState({
+          ...conversationState,
+          step: "showing_options",
+          flightOptions: mockFlightOptions,
+        });
+      }, 1500);
+    });
+  }, [addMessage, conversationState, setConversationState, simulateTyping, setIsTyping]);
+
+  const handleRecoverySelect = useCallback(
+    (option: string) => {
+      setActiveRecovery(null);
+      addMessage("user", option);
+      simulateTyping(() => {
+        addMessage(
+          "assistant",
+          `Got it, I've updated that. Let me search with the corrected information...`
+        );
+        setConversationState({
+          ...conversationState,
+          step: "searching",
+        });
+        // Continue with updated search
+        setTimeout(() => {
+          setIsTyping(false);
+          addMessage(
+            "assistant",
+            "Here are 3 options that fit your schedule:"
+          );
+          setConversationState({
+            ...conversationState,
+            step: "showing_options",
+            flightOptions: mockFlightOptions,
+          });
+        }, 1500);
+      });
+    },
+    [addMessage, conversationState, setConversationState, simulateTyping, setIsTyping]
+  );
+
   const handleUserMessage = useCallback(
     (message: string) => {
       addMessage("user", message);
       const lowerMessage = message.toLowerCase();
+
+      // Check for misunderstanding scenarios (for demo/showcase)
+      const scenario = checkForMisunderstandingTrigger(lowerMessage);
+
+      // If we find a trigger with low-medium confidence, show recovery flow
+      if (scenario && scenario.aiInterpretation.confidence < 0.85) {
+        simulateTyping(() => {
+          addMessage(
+            "assistant",
+            `I understood you want to go to ${scenario.aiInterpretation.understood}...`
+          );
+          setActiveRecovery(scenario);
+          setConversationState({
+            ...conversationState,
+            step: "clarifying",
+          });
+        });
+        return;
+      }
 
       // Handle different intents
       if (
@@ -495,6 +593,17 @@ export default function ChatPage() {
                           />
                         </div>
                       )}
+
+                    {/* Recovery prompt for AI misunderstandings */}
+                    {message.role === "assistant" &&
+                      message.content.includes("I understood you want") &&
+                      activeRecovery && (
+                        <RecoveryPrompt
+                          scenario={activeRecovery}
+                          onConfirmOriginal={handleRecoveryConfirm}
+                          onSelectOption={handleRecoverySelect}
+                        />
+                      )}
                   </ChatMessage>
                 ))}
 
@@ -546,6 +655,8 @@ export default function ChatPage() {
         message={undoMessage}
         onUndo={handleUndo}
         onDismiss={() => setShowUndo(false)}
+        actionType={undoActionType}
+        description="Your trip has been confirmed"
       />
 
       {/* Reset Button */}

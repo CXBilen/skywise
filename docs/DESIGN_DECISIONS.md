@@ -432,7 +432,105 @@ Show minimal information upfront, reveal details on demand.
 
 ---
 
-## 9. Decision Log
+## 9. v0.0.3 Enhancements
+
+### Decision: Confidence Microcopy System
+
+**What We Chose:**
+Natural language explanations of AI uncertainty, not just percentages.
+
+**Implementation:**
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                                                                             │
+│   CONFIDENCE MICROCOPY EXAMPLES                                             │
+│                                                                             │
+│   HIGH CONFIDENCE (80%+):                                                   │
+│   "I'm confident about this destination." ✓                                 │
+│                                                                             │
+│   MEDIUM CONFIDENCE (50-79%):                                               │
+│   "I found a match, but there are similar options. Is this correct?"        │
+│                                                                             │
+│   LOW CONFIDENCE (<50%):                                                    │
+│   "I'm not sure about this destination. Did you mean one of these?"         │
+│                                                                             │
+│   Why Microcopy > Percentages:                                              │
+│   • More accessible to non-technical users                                  │
+│   • Actionable (suggests what to do next)                                   │
+│   • Builds trust through transparency                                       │
+│                                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
+
+### Decision: AI Recovery Flows
+
+**What We Chose:**
+When AI is uncertain, show interpretation and offer correction options proactively.
+
+**Rationale:**
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                                                                             │
+│   RECOVERY FLOW DESIGN                                                      │
+│                                                                             │
+│   User: "I need to fly to New York next Tuesday"                            │
+│                                                                             │
+│   Traditional Approach:                                                     │
+│   AI assumes JFK, Jan 21 → Books → User discovers wrong airport             │
+│   → Frustration → Cancel → Start over                                       │
+│                                                                             │
+│   SkyWise Recovery Flow:                                                    │
+│   ┌─────────────────────────────────────────────────┐                       │
+│   │  Let me confirm I understood correctly          │                       │
+│   │                                                 │                       │
+│   │  AIRPORT: JFK - John F. Kennedy  [72% confident]│                       │
+│   │                                                 │                       │
+│   │  [✓ Yes, that's correct]                        │                       │
+│   │  [Actually, LaGuardia works better]             │                       │
+│   │  [What about Newark?]                           │                       │
+│   │  [Show me all NYC airports]                     │                       │
+│   │                                                 │                       │
+│   │  [Why am I asking?]                             │                       │
+│   └─────────────────────────────────────────────────┘                       │
+│                                                                             │
+│   Key Principles:                                                           │
+│   • AI admits uncertainty proactively                                       │
+│   • Offers correction options, not just "try again"                         │
+│   • Explains WHY it's asking (transparency)                                 │
+│   • Never blames user for ambiguous input                                   │
+│                                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
+
+### Decision: Enhanced Undo with Context
+
+**What We Chose:**
+Undo toast shows what will be undone, not just "Undo" button.
+
+**Implementation:**
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                                                                             │
+│   CONTEXTUAL UNDO MESSAGES                                                  │
+│                                                                             │
+│   Action Type      │ Undo Explanation                                       │
+│   ─────────────────┼────────────────────────────────────────────────────    │
+│   calendar_add     │ "Undo will remove the event from your calendar"        │
+│   booking_confirm  │ "Undo will cancel the booking and remove events"       │
+│   email_import     │ "Undo will remove the imported trip"                   │
+│   trip_delete      │ "Undo will restore the deleted trip"                   │
+│                                                                             │
+│   Why This Matters:                                                         │
+│   • Users know exactly what will happen                                     │
+│   • Reduces anxiety about clicking "Undo"                                   │
+│   • Builds trust through predictability                                     │
+│                                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## 10. Decision Log
 
 | # | Decision | Date | Rationale | Owner |
 |---|----------|------|-----------|-------|
@@ -444,10 +542,13 @@ Show minimal information upfront, reveal details on demand.
 | 6 | Sky blue primary | Week 1 | Trust + travel | Design |
 | 7 | Confidence percentages | Week 3 | Transparency | UX Lead |
 | 8 | Specific error messages | Week 4 | Actionable recovery | UX Lead |
+| 9 | Confidence microcopy | v0.0.3 | Natural language > percentages | UX Lead |
+| 10 | AI recovery flows | v0.0.3 | Graceful error handling | UX Lead |
+| 11 | Contextual undo | v0.0.3 | Predictability + trust | UX Lead |
 
 ---
 
-## 10. Future Considerations
+## 11. Future Considerations
 
 ### Decisions Deferred
 
@@ -463,9 +564,11 @@ Show minimal information upfront, reveal details on demand.
 1. Should we allow calendar event modification, not just creation?
 2. How do we handle timezone conflicts for international travel?
 3. Should confidence thresholds be user-configurable?
+4. Should recovery flows be dismissible after first confirmation?
+5. How verbose should AI uncertainty messages be for power users?
 
 ---
 
-*Document Version: 1.0*
+*Document Version: 1.1 (v0.0.3)*
 *Last Updated: January 2025*
 *Author: Design Team*

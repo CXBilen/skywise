@@ -1,9 +1,9 @@
 {
   "name": "skywise-travel",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "private": true,
   "description": "AI-powered airplane reservation chatbot with trust-first design",
-  "changelog": "v0.0.2: Added NLP intent parsing, enhanced error handling, undo system, trust messaging, mobile responsiveness, realistic email import, improved demo mode",
+  "changelog": "v0.0.3: Added confidence microcopy system, enhanced undo UX with contextual explanations, implemented AI recovery flow showcase, added mobile progressive disclosure documentation, created interview-ready documentation | v0.0.2: Added NLP intent parsing, enhanced error handling, undo system, trust messaging, mobile responsiveness, realistic email import, improved demo mode",
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
@@ -45,7 +45,7 @@
     "zod": "^3.25.76"
   },
   "devDependencies": {
-    "@types/node": "^22.19.5",
+    "@types/node": "^22.19.6",
     "@types/react": "^19.2.8",
     "@types/react-dom": "^19.2.3",
     "drizzle-kit": "^0.30.6",

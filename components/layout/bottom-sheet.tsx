@@ -1,5 +1,23 @@
 'use client';
 
+/**
+ * MOBILE UX DECISION: Progressive Disclosure
+ *
+ * On mobile, we use a three-level bottom sheet:
+ * - PEEK (25%): Shows action buttons only (Confirm/Cancel)
+ * - HALF (50%): Shows trip summary without full details
+ * - FULL (90%): Complete information with calendar preview
+ *
+ * This is a deliberate design choice to:
+ * 1. Not overwhelm users on small screens
+ * 2. Allow quick actions without scrolling
+ * 3. Provide full details on demand
+ *
+ * Users can drag to change levels, or tap the snap indicators to expand.
+ * This pattern follows the "progressive disclosure" principle—showing
+ * only what's needed at each level of engagement.
+ */
+
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence, useDragControls, PanInfo, useAnimation } from 'framer-motion';
 import { X, GripHorizontal } from 'lucide-react';

@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1440, height=900">
+  <title>SkyWise - Desktop Conflict Detection</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      width: 1440px;
+      height: 900px;
+      background: #f8fafc;
+      display: flex;
+      flex-direction: column;
+    }
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 32px;
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid #e2e8f0;
+    }
+    .header-left { display: flex; align-items: center; gap: 16px; }
+    .logo {
+      width: 44px; height: 44px;
+      background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);
+      border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 4px 12px -4px rgba(14, 165, 233, 0.4);
+    }
+    .logo svg { width: 24px; height: 24px; color: white; }
+    .brand h1 { font-size: 20px; font-weight: 700; color: #0f172a; }
+    .brand p { font-size: 12px; color: #64748b; }
+    .nav { display: flex; gap: 32px; }
+    .nav a { font-size: 14px; color: #64748b; text-decoration: none; font-weight: 500; }
+    .settings-btn {
+      width: 40px; height: 40px;
+      background: #f1f5f9;
+      border-radius: 12px; border: none;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .settings-btn svg { width: 20px; height: 20px; color: #64748b; }
+    .main { flex: 1; display: flex; overflow: hidden; }
+    .chat-panel { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+    .chat-messages { flex: 1; padding: 32px; overflow-y: auto; }
+    .messages-container { max-width: 720px; margin: 0 auto; }
+    .message { display: flex; gap: 12px; margin-bottom: 20px; }
+    .message.user { flex-direction: row-reverse; }
+    .avatar {
+      width: 36px; height: 36px;
+      background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);
+      border-radius: 18px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .avatar svg { width: 18px; height: 18px; color: white; }
+    .message.user .avatar { background: linear-gradient(135deg, #64748b 0%, #475569 100%); }
+    .bubble {
+      background: white;
+      border: 1px solid #e2e8f0;
+      border-radius: 20px;
+      border-top-left-radius: 4px;
+      padding: 16px 20px;
+      max-width: 560px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    }
+    .message.user .bubble {
+      background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+      border: none;
+      border-radius: 20px;
+      border-top-right-radius: 4px;
+    }
+    .bubble p { font-size: 15px; line-height: 1.6; color: #1e293b; }
+    .message.user .bubble p { color: white; }
+    .chat-input-area {
+      padding: 20px 32px;
+      background: white;
+      border-top: 1px solid #e2e8f0;
+    }
+    .input-wrapper { max-width: 720px; margin: 0 auto; }
+    .input-container {
+      display: flex; align-items: center; gap: 16px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 28px;
+      padding: 8px 8px 8px 24px;
+    }
+    .input-container input {
+      flex: 1; border: none; background: transparent;
+      font-size: 15px; outline: none;
+    }
+    .input-container input::placeholder { color: #94a3b8; }
+    .send-btn {
+      width: 44px; height: 44px;
+      background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+      border-radius: 22px; border: none;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 4px 12px -4px rgba(14, 165, 233, 0.5);
+    }
+    .send-btn svg { width: 20px; height: 20px; color: white; }
+    .side-panel {
+      width: 440px;
+      background: white;
+      border-left: 1px solid #e2e8f0;
+      display: flex;
+      flex-direction: column;
+    }
+    .panel-header {
+      display: flex; align-items: center; gap: 14px;
+      padding: 20px;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    .warning-icon {
+      width: 48px; height: 48px;
+      background: linear-gradient(135deg, #fb923c 0%, #ea580c 100%);
+      border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 8px 20px -8px rgba(234, 88, 12, 0.5);
+    }
+    .warning-icon svg { width: 24px; height: 24px; color: white; }
+    .header-text h2 { font-size: 17px; font-weight: 600; color: #9a3412; }
+    .header-text p { font-size: 13px; color: #c2410c; }
+    .panel-content { flex: 1; padding: 20px; overflow-y: auto; }
+    .timeline-card {
+      background: #fff7ed;
+      border: 1px solid #fed7aa;
+      border-radius: 14px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+    .timeline-item { display: flex; align-items: center; gap: 14px; }
+    .timeline-dot {
+      width: 12px; height: 12px;
+      border-radius: 6px;
+      flex-shrink: 0;
+    }
+    .timeline-dot.flight { background: #0ea5e9; }
+    .timeline-dot.conflict { background: #f97316; }
+    .timeline-text h3 { font-size: 14px; font-weight: 500; color: #0f172a; }
+    .timeline-text p { font-size: 12px; color: #64748b; }
+    .timeline-line {
+      width: 3px;
+      height: 28px;
+      background: linear-gradient(180deg, #0ea5e9 0%, #f97316 50%, #dc2626 100%);
+      margin-left: 4px;
+      margin-top: 10px;
+      margin-bottom: 10px;
+      border-radius: 2px;
+    }
+    .conflict-event {
+      display: flex; align-items: center; gap: 14px;
+      padding: 14px;
+      background: #ffedd5;
+      border-radius: 12px;
+      margin-top: 10px;
+    }
+    .conflict-event-text h3 { font-size: 14px; font-weight: 600; color: #9a3412; }
+    .conflict-event-text p { font-size: 12px; color: #c2410c; }
+    .conflict-event svg {
+      width: 18px; height: 18px;
+      color: #ea580c;
+      margin-left: auto;
+    }
+    .explanation {
+      margin-bottom: 20px;
+    }
+    .explanation p {
+      font-size: 14px;
+      color: #64748b;
+      line-height: 1.6;
+    }
+    .options-header {
+      margin-bottom: 14px;
+    }
+    .options-header span {
+      font-size: 13px;
+      font-weight: 600;
+      color: #475569;
+    }
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .option-btn {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 16px 18px;
+      border-radius: 12px;
+      font-size: 15px;
+      cursor: pointer;
+      text-align: left;
+    }
+    .option-btn.primary {
+      background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+      border: none;
+      color: white;
+      font-weight: 600;
+      box-shadow: 0 8px 20px -8px rgba(14, 165, 233, 0.5);
+    }
+    .option-btn.secondary {
+      background: white;
+      border: 1px solid #e2e8f0;
+      color: #475569;
+    }
+    .option-btn.tertiary {
+      background: white;
+      border: 1px solid #e2e8f0;
+      color: #64748b;
+    }
+    .option-btn svg {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="header-left">
+      <div class="logo">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/>
+        </svg>
+      </div>
+      <div class="brand">
+        <h1>SkyWise</h1>
+        <p>Travel Assistant</p>
+      </div>
+    </div>
+    <nav class="nav">
+      <a href="#">Chat</a>
+      <a href="#">My Trips</a>
+      <a href="#">Import</a>
+    </nav>
+    <button class="settings-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="3"/>
+        <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+      </svg>
+    </button>
+  </header>
+
+  <main class="main">
+    <div class="chat-panel">
+      <div class="chat-messages">
+        <div class="messages-container">
+          <div class="message user">
+            <div class="avatar">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                <circle cx="12" cy="7" r="4"/>
+              </svg>
+            </div>
+            <div class="bubble">
+              <p>Select the Delta 7am flight</p>
+            </div>
+          </div>
+
+          <div class="message">
+            <div class="avatar">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/>
+              </svg>
+            </div>
+            <div class="bubble">
+              <p>I noticed that flight conflicts with your calendar. Take a look at the details and let me know how you'd like to proceed.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="chat-input-area">
+        <div class="input-wrapper">
+          <div class="input-container">
+            <input type="text" placeholder="Type a message...">
+            <button class="send-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="m22 2-7 20-4-9-9-4Z"/>
+                <path d="M22 2 11 13"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <aside class="side-panel">
+      <div class="panel-header">
+        <div class="warning-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/>
+            <line x1="12" y1="9" x2="12" y2="13"/>
+            <line x1="12" y1="17" x2="12.01" y2="17"/>
+          </svg>
+        </div>
+        <div class="header-text">
+          <h2>Schedule Conflict Detected</h2>
+          <p>This flight overlaps with an event</p>
+        </div>
+      </div>
+
+      <div class="panel-content">
+        <div class="timeline-card">
+          <div class="timeline-item">
+            <div class="timeline-dot flight"></div>
+            <div class="timeline-text">
+              <h3>Flight departs</h3>
+              <p>7:00 AM</p>
+            </div>
+          </div>
+          <div class="timeline-line"></div>
+          <div class="conflict-event">
+            <div class="timeline-dot conflict"></div>
+            <div class="conflict-event-text">
+              <h3>Team Standup</h3>
+              <p>9:00 AM - 9:30 AM</p>
+            </div>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="4" width="18" height="18" rx="2"/>
+              <line x1="16" y1="2" x2="16" y2="6"/>
+              <line x1="8" y1="2" x2="8" y2="6"/>
+              <line x1="3" y1="10" x2="21" y2="10"/>
+            </svg>
+          </div>
+        </div>
+
+        <div class="explanation">
+          <p>Your flight departs at 7:00 AM, but you have "Team Standup" scheduled from 9:00 - 9:30 AM. You'll be in the air during this meeting.</p>
+        </div>
+
+        <div class="options-header">
+          <span>What would you like to do?</span>
+        </div>
+
+        <div class="options">
+          <button class="option-btn primary">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"/>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+            Find alternative flights
+          </button>
+          <button class="option-btn secondary">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="5" y1="12" x2="19" y2="12"/>
+              <polyline points="12 5 19 12 12 19"/>
+            </svg>
+            Book anyway, skip calendar
+          </button>
+          <button class="option-btn tertiary">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+              <circle cx="12" cy="12" r="3"/>
+            </svg>
+            Show conflict details
+          </button>
+        </div>
+      </div>
+    </aside>
+  </main>
+</body>
+</html>

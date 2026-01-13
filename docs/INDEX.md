@@ -27,6 +27,7 @@ This case study demonstrates the design and development of **SkyWise**, an AI-po
 | [Design Decisions](./DESIGN_DECISIONS.md) | Rationale for key design choices |
 | [Case Study Mapping](./CASE_STUDY_MAPPING.md) | Requirements to implementation mapping |
 | [Architecture](./ARCHITECTURE.md) | Technical architecture and data flows |
+| [Interview Talking Points](./INTERVIEW_TALKING_POINTS.md) | Design rationale for portfolio presentation |
 
 ---
 
@@ -38,7 +39,7 @@ This case study demonstrates the design and development of **SkyWise**, an AI-po
 |-------------|--------|----------|
 | Problem framing & assumptions | ✅ Complete | [UX Research](./UX_RESEARCH.md) |
 | 2-3 key user flows | ✅ Complete | [User Flows](./USER_FLOWS.md) |
-| Wireframes / mid-fi screens | ✅ Complete | [Figma Package](../skywise-figma/) |
+| Wireframes / mid-fi screens | ✅ Complete | [Figma Package](../figma/) |
 | - Onboarding & permissions | ✅ | Screens 01-03 |
 | - Booking via chat | ✅ | Screens 04-06, 09 |
 | - Conflict handling | ✅ | Screen 07 |
@@ -93,6 +94,12 @@ This case study demonstrates the design and development of **SkyWise**, an AI-po
 - No silent calendar writes
 - Full transparency on AI actions
 
+### 5. v0.0.3 Enhancements
+- **Confidence Microcopy**: AI shows uncertainty levels with natural language explanations
+- **Recovery Flows**: Graceful handling when AI misunderstands (e.g., "next Tuesday" ambiguity)
+- **Enhanced Undo UX**: Clear explanations of what undo will do
+- **Interview Documentation**: Comprehensive design rationale for portfolio presentation
+
 ---
 
 ## Design Principles
@@ -139,8 +146,9 @@ skywise/
 │   ├── ai/                # Intent parsing, NLP
 │   ├── email/             # Email parser
 │   └── actions/           # Undo manager
-└── skywise-figma/         # Figma import package
-    └── screens/           # 10 HTML screens
+└── figma/                 # Figma HTML screens (20 total)
+    ├── mobile/            # Mobile screens (01-10)
+    └── desktop/           # Desktop screens (01-10)
 ```
 
 ---
@@ -169,4 +177,4 @@ This case study was created for the **UX Designer (AI-Native)** position at **Ef
 
 ---
 
-*Last Updated: January 2025*
+*Last Updated: January 2025 (v0.0.3)*

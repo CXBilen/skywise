@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1440, height=900">
+  <title>SkyWise - Desktop Calendar Permission</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      width: 1440px;
+      height: 900px;
+      background: linear-gradient(135deg, #f0f9ff 0%, #ffffff 50%, #fffbeb 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .container {
+      width: 520px;
+      text-align: center;
+    }
+    .progress-dots {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 48px;
+    }
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 4px;
+      background: #e2e8f0;
+    }
+    .dot.complete {
+      background: #94a3b8;
+    }
+    .dot.active {
+      width: 32px;
+      background: #0ea5e9;
+    }
+    .icon-container {
+      width: 100px;
+      height: 100px;
+      background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);
+      border-radius: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 24px 48px -12px rgba(14, 165, 233, 0.4);
+      margin: 0 auto 40px;
+    }
+    .icon-container svg {
+      width: 48px;
+      height: 48px;
+      color: white;
+    }
+    h1 {
+      font-size: 36px;
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 16px;
+    }
+    .subtitle {
+      font-size: 18px;
+      color: #64748b;
+      line-height: 1.6;
+      margin-bottom: 40px;
+      max-width: 420px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .permissions {
+      background: #f8fafc;
+      border-radius: 20px;
+      padding: 28px;
+      margin-bottom: 24px;
+      text-align: left;
+    }
+    .permission {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+    .permission:last-child {
+      margin-bottom: 0;
+    }
+    .check {
+      width: 24px;
+      height: 24px;
+      color: #10b981;
+      flex-shrink: 0;
+    }
+    .permission span {
+      font-size: 15px;
+      color: #475569;
+      line-height: 1.5;
+    }
+    .privacy-note {
+      font-size: 13px;
+      color: #94a3b8;
+      text-align: center;
+      margin-bottom: 32px;
+    }
+    .btn-primary {
+      width: 100%;
+      padding: 18px 40px;
+      background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+      border: none;
+      border-radius: 14px;
+      color: white;
+      font-size: 16px;
+      font-weight: 600;
+      box-shadow: 0 8px 24px -8px rgba(14, 165, 233, 0.5);
+      cursor: pointer;
+      margin-bottom: 12px;
+    }
+    .btn-secondary {
+      width: 100%;
+      padding: 14px 32px;
+      background: transparent;
+      border: none;
+      color: #64748b;
+      font-size: 15px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="progress-dots">
+      <div class="dot complete"></div>
+      <div class="dot complete"></div>
+      <div class="dot active"></div>
+      <div class="dot"></div>
+    </div>
+
+    <div class="icon-container">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+        <line x1="16" y1="2" x2="16" y2="6"/>
+        <line x1="8" y1="2" x2="8" y2="6"/>
+        <line x1="3" y1="10" x2="21" y2="10"/>
+      </svg>
+    </div>
+
+    <h1>Connect Your Calendar</h1>
+    <p class="subtitle">I'll check for conflicts and add trips—but only with your explicit permission.</p>
+
+    <div class="permissions">
+      <div class="permission">
+        <svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M20 6 9 17l-5-5"/>
+        </svg>
+        <span>See your schedule to avoid conflicts</span>
+      </div>
+      <div class="permission">
+        <svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M20 6 9 17l-5-5"/>
+        </svg>
+        <span>Add flight events with one-click confirmation</span>
+      </div>
+      <div class="permission">
+        <svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M20 6 9 17l-5-5"/>
+        </svg>
+        <span>I'll always ask before adding anything</span>
+      </div>
+      <div class="permission">
+        <svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M20 6 9 17l-5-5"/>
+        </svg>
+        <span>Undo any calendar change instantly</span>
+      </div>
+    </div>
+
+    <p class="privacy-note">Calendar access is used only for conflict detection and trip management.</p>
+
+    <button class="btn-primary">Connect Calendar</button>
+    <button class="btn-secondary">Skip for now</button>
+  </div>
+</body>
+</html>

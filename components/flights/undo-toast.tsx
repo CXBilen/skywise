@@ -162,9 +162,17 @@ export function UndoToast({
                 {description && (
                   <p className="text-xs text-slate-400 truncate">{description}</p>
                 )}
+                {/* What will happen on undo - contextual explanation */}
+                <p className="text-xs text-slate-500 mt-1">
+                  {actionType === 'calendar_add' && "Undo will remove the event from your calendar"}
+                  {actionType === 'booking_confirm' && "Undo will cancel the booking and remove calendar events"}
+                  {actionType === 'email_import' && "Undo will remove the imported trip"}
+                  {actionType === 'trip_delete' && "Undo will restore the deleted trip"}
+                  {actionType === 'preference_change' && "Undo will restore your previous preferences"}
+                </p>
                 <p className="text-xs text-slate-500 mt-0.5">
                   {isPaused ? (
-                    <span className="text-amber-400">Paused - hover to extend</span>
+                    <span className="text-amber-400">⏸ Paused - hover to extend</span>
                   ) : (
                     <span>{remainingSeconds}s to undo</span>
                   )}

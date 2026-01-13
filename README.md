@@ -114,6 +114,9 @@ skywise-travel/
 │   │   ├── index.ts
 │   │   └── schema.ts        # Drizzle schema
 │   └── utils.ts             # Utility functions
+├── figma/                   # Figma HTML screens (20 total)
+│   ├── mobile/              # Mobile screens 01-10 (375×812px)
+│   └── desktop/             # Desktop screens 01-10 (1440×900px)
 ├── drizzle.config.ts        # Drizzle configuration
 ├── tailwind.config.ts       # Tailwind configuration
 └── package.json
@@ -218,6 +221,61 @@ bun run db:generate # Generate database migrations
 bun run db:push    # Push schema to database
 bun run db:studio  # Open Drizzle Studio
 ```
+
+## 📖 Case Study Narrative
+
+### The Problem
+
+Business travelers waste 15+ minutes per trip on fragmented booking flows:
+- Search on one site
+- Compare on another
+- Check calendar manually
+- Copy-paste confirmation details
+- Create calendar events by hand
+
+### The Insight
+
+> "What if the booking assistant could see your calendar and do the tedious work—but only with your explicit permission?"
+
+### The Solution
+
+SkyWise is an AI travel assistant that:
+1. **Understands natural language** - "Book me a flight to SF next Tuesday"
+2. **Checks your calendar** - Proactively flags conflicts
+3. **Shows its work** - Displays confidence levels on extracted data
+4. **Stays in your control** - Never writes without confirmation
+
+### Key Design Decisions
+
+| Decision | Rationale |
+|----------|-----------|
+| Chat-first interface | Speed and flexibility over rigid forms |
+| Confidence indicators | AI admits uncertainty, users verify appropriately |
+| 15-second undo | Optimal balance of reversibility and finality |
+| Progressive disclosure on mobile | Action-first, details on demand |
+
+### What Makes This Different
+
+Most travel chatbots are glorified search boxes. SkyWise is designed around **trust architecture**:
+
+- **AI suggests, user decides** - No autonomous calendar writes
+- **Transparent uncertainty** - "I'm 72% sure about this time"
+- **Graceful recovery** - When AI misunderstands, it admits and offers corrections
+
+---
+
+## 🎯 For Interviewers
+
+This project demonstrates:
+- [x] AI-aware UX design (confidence, recovery flows)
+- [x] Trust & privacy considerations
+- [x] Mobile-first progressive disclosure
+- [x] Production-quality implementation
+- [x] Clear design rationale documentation
+
+See `/docs/INTERVIEW_TALKING_POINTS.md` for detailed design decisions.
+
+---
 
 ## 🎯 Case Study Context
 
