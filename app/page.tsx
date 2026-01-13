@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Plane, ArrowRight, Mail, Calendar, Shield, Sparkles } from "lucide-react";
+import { Plane, ArrowRight, Mail, Calendar, Shield, Sparkles, Presentation, FileText, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
@@ -32,6 +32,42 @@ export default function HomePage() {
           className="absolute bottom-20 -right-20 w-96 h-96 bg-amber-400 rounded-full blur-3xl"
         />
       </div>
+
+      {/* Efsora Presentation Banner */}
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="relative z-20 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 border-b border-slate-700"
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-sky-400 to-sky-600 flex items-center justify-center">
+                <Presentation className="h-5 w-5 text-white" />
+              </div>
+              <div className="text-center sm:text-left">
+                <p className="text-white font-semibold">Efsora Labs Case Study</p>
+                <p className="text-slate-400 text-sm">UX Designer (AI-Native) Position</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-3">
+              <Link href="/presentation">
+                <Button className="bg-sky-500 hover:bg-sky-600 text-white">
+                  <Presentation className="h-4 w-4 mr-2" />
+                  View Presentation
+                </Button>
+              </Link>
+              <Link href="https://github.com/yourusername/skywise" target="_blank">
+                <Button variant="outline" className="border-slate-600 text-slate-300 hover:bg-slate-800 hover:text-white">
+                  <FileText className="h-4 w-4 mr-2" />
+                  Documentation
+                </Button>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </motion.div>
 
       {/* Hero Section */}
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-32">
@@ -188,6 +224,43 @@ export default function HomePage() {
         </div>
       </motion.div>
 
+      {/* Case Study Documentation Section */}
+      <motion.div
+        initial={{ opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 1 }}
+        className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-20"
+      >
+        <div className="text-center mb-8">
+          <h2 className="text-2xl font-bold text-slate-900 mb-2">Case Study Documentation</h2>
+          <p className="text-slate-600">Explore the UX research and design process</p>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          {[
+            { title: "UX Research", desc: "Problem framing & insights", href: "/docs/UX_RESEARCH.md" },
+            { title: "User Personas", desc: "Target user profiles", href: "/docs/PERSONAS.md" },
+            { title: "User Flows", desc: "Journey diagrams", href: "/docs/USER_FLOWS.md" },
+            { title: "Design Decisions", desc: "Rationale & trade-offs", href: "/docs/DESIGN_DECISIONS.md" },
+          ].map((doc, index) => (
+            <motion.a
+              key={doc.title}
+              href={doc.href}
+              target="_blank"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 1.1 + index * 0.1 }}
+              className="p-4 bg-slate-50 rounded-xl border border-slate-200 hover:border-sky-300 hover:bg-sky-50 transition-colors group"
+            >
+              <div className="flex items-center justify-between mb-2">
+                <h3 className="font-semibold text-slate-900">{doc.title}</h3>
+                <ExternalLink className="h-4 w-4 text-slate-400 group-hover:text-sky-500" />
+              </div>
+              <p className="text-sm text-slate-600">{doc.desc}</p>
+            </motion.a>
+          ))}
+        </div>
+      </motion.div>
+
       {/* Footer */}
       <footer className="relative z-10 border-t border-slate-200/60 bg-white/50 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -196,9 +269,13 @@ export default function HomePage() {
               <Plane className="h-5 w-5 text-sky-500" />
               <span className="font-semibold text-slate-900">SkyWise</span>
             </div>
-            <p className="text-sm text-slate-500">
-              AI-powered travel assistant • Case study demo
-            </p>
+            <div className="flex items-center gap-4 text-sm text-slate-500">
+              <Link href="/presentation" className="hover:text-sky-500 transition-colors">Presentation</Link>
+              <span>•</span>
+              <Link href="/chat" className="hover:text-sky-500 transition-colors">Demo</Link>
+              <span>•</span>
+              <span>Efsora Labs Case Study</span>
+            </div>
           </div>
         </div>
       </footer>
