@@ -1,5 +1,17 @@
 {
-  "/page": "app/page.js",
+  "/api/email/route": "app/api/email/route.js",
   "/_not-found/page": "app/_not-found/page.js",
-  "/docs/page": "app/docs/page.js"
+  "/api/flights/route": "app/api/flights/route.js",
+  "/api/calendar/route": "app/api/calendar/route.js",
+  "/api/trips/route": "app/api/trips/route.js",
+  "/icon.svg/route": "app/icon.svg/route.js",
+  "/docs/page": "app/docs/page.js",
+  "/page": "app/page.js",
+  "/import/page": "app/import/page.js",
+  "/onboarding/page": "app/onboarding/page.js",
+  "/presentation/page": "app/presentation/page.js",
+  "/settings/page": "app/settings/page.js",
+  "/chat/page": "app/chat/page.js",
+  "/trips/page": "app/trips/page.js",
+  "/docs/[slug]/page": "app/docs/[slug]/page.js"
 }

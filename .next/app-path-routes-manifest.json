@@ -1,1 +1,17 @@
-{"/api/calendar/route":"/api/calendar","/api/flights/route":"/api/flights","/api/email/route":"/api/email","/api/trips/route":"/api/trips","/icon.svg/route":"/icon.svg","/_not-found/page":"/_not-found","/chat/page":"/chat","/docs/page":"/docs","/import/page":"/import","/page":"/","/onboarding/page":"/onboarding","/trips/page":"/trips","/settings/page":"/settings","/presentation/page":"/presentation","/docs/[slug]/page":"/docs/[slug]"}
+{
+  "/api/email/route": "/api/email",
+  "/_not-found/page": "/_not-found",
+  "/api/flights/route": "/api/flights",
+  "/api/calendar/route": "/api/calendar",
+  "/api/trips/route": "/api/trips",
+  "/icon.svg/route": "/icon.svg",
+  "/docs/page": "/docs",
+  "/page": "/",
+  "/import/page": "/import",
+  "/onboarding/page": "/onboarding",
+  "/presentation/page": "/presentation",
+  "/settings/page": "/settings",
+  "/chat/page": "/chat",
+  "/trips/page": "/trips",
+  "/docs/[slug]/page": "/docs/[slug]"
+}
