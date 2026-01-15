@@ -100,6 +100,23 @@ export const SHOWCASE_SCENARIOS: MisunderstandingScenario[] = [
     explanation:
       "Chicago has two major airports. O'Hare is the main hub, but Midway often has budget-friendly options with Southwest.",
   },
+  {
+    id: "international-destination",
+    trigger: "tokyo",
+    aiInterpretation: {
+      field: "destination",
+      understood: "NRT - Tokyo Narita International",
+      confidence: 0.68,
+    },
+    correctValue: "HND - Tokyo Haneda",
+    recoveryOptions: [
+      "Yes, Narita is fine",
+      "Actually, Haneda is more convenient",
+      "Show me flights to both airports",
+    ],
+    explanation:
+      "Tokyo has two major airports. Narita (NRT) is the main international hub but is farther from the city center. Haneda (HND) is closer to downtown Tokyo and may be more convenient.",
+  },
 ];
 
 /**

@@ -78,20 +78,20 @@ function EditableField({
   icon,
 }: EditableFieldProps) {
   return (
-    <div className="flex items-center justify-between py-2">
-      <div className="flex items-center gap-2 text-slate-600">
+    <div className="flex items-center justify-between py-2 gap-2 min-w-0">
+      <div className="flex items-center gap-2 text-slate-600 shrink-0">
         {icon}
-        <span className="text-sm">{label}</span>
+        <span className="text-xs sm:text-sm">{label}</span>
       </div>
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-1 sm:gap-2 min-w-0">
         {isEditing ? (
           <Input
             value={value}
             onChange={(e) => onChange(e.target.value)}
-            className="h-8 w-32 text-right"
+            className="h-7 sm:h-8 w-24 sm:w-32 text-right text-xs sm:text-sm"
           />
         ) : (
-          <span className="font-medium text-slate-900">{value}</span>
+          <span className="font-medium text-slate-900 text-xs sm:text-sm truncate max-w-[100px] sm:max-w-[150px]">{value}</span>
         )}
         <ConfidenceBadge level={confidence} />
       </div>
@@ -120,23 +120,24 @@ export function ImportedTripCard({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4 }}
+      className="w-full min-w-0"
     >
-      <Card className="overflow-hidden border-2 border-amber-200/60 bg-gradient-to-b from-white to-amber-50/30">
+      <Card className="overflow-hidden border-2 border-amber-200/60 bg-gradient-to-b from-white to-amber-50/30 w-full">
         <CardHeader className="pb-3">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-400 to-amber-500 flex items-center justify-center shadow-lg shadow-amber-500/30">
+          <div className="flex items-center justify-between gap-2 min-w-0">
+            <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-400 to-amber-500 flex items-center justify-center shadow-lg shadow-amber-500/30 shrink-0">
                 <Mail className="h-5 w-5 text-white" />
               </div>
-              <div>
-                <CardTitle className="text-base">Found in your email</CardTitle>
-                <p className="text-sm text-slate-500">{source}</p>
+              <div className="min-w-0 flex-1">
+                <CardTitle className="text-sm sm:text-base">Found in your email</CardTitle>
+                <p className="text-xs sm:text-sm text-slate-500 truncate">{source}</p>
               </div>
             </div>
             {hasLowConfidence && (
-              <Badge variant="warning" className="text-xs">
+              <Badge variant="warning" className="text-xs shrink-0">
                 <AlertTriangle className="h-3 w-3 mr-1" />
-                Review needed
+                Review
               </Badge>
             )}
           </div>
@@ -191,34 +192,42 @@ export function ImportedTripCard({
           </div>
 
           {hasLowConfidence && !isEditing && (
-            <p className="text-sm text-amber-700 bg-amber-50 p-3 rounded-lg">
+            <p className="text-xs sm:text-sm text-amber-700 bg-amber-50 p-2 sm:p-3 rounded-lg">
               I&apos;m not 100% certain about some details. Please verify before
               adding to your calendar.
             </p>
           )}
 
-          <div className="flex gap-2 pt-2">
-            {onDismiss && (
-              <Button variant="ghost" onClick={onDismiss} className="flex-1">
-                <X className="h-4 w-4 mr-2" />
-                Dismiss
+          <div className="space-y-2 pt-2">
+            <div className="grid grid-cols-2 gap-2">
+              {onDismiss && (
+                <Button
+                  variant="ghost"
+                  onClick={onDismiss}
+                  className="text-sm"
+                  size="sm"
+                >
+                  <X className="h-4 w-4 mr-1.5 shrink-0" />
+                  Dismiss
+                </Button>
+              )}
+              <Button
+                variant="outline"
+                onClick={() => setIsEditing(!isEditing)}
+                className="text-sm"
+                size="sm"
+              >
+                <Edit2 className="h-4 w-4 mr-1.5 shrink-0" />
+                {isEditing ? "Done" : "Edit"}
               </Button>
-            )}
-            <Button
-              variant="outline"
-              onClick={() => setIsEditing(!isEditing)}
-              className="flex-1"
-            >
-              <Edit2 className="h-4 w-4 mr-2" />
-              {isEditing ? "Done editing" : "Edit"}
-            </Button>
+            </div>
             {onAddToCalendar && (
               <Button
                 onClick={() => onAddToCalendar(data)}
-                className="flex-1"
+                className="w-full"
                 disabled={isEditing}
               >
-                <Calendar className="h-4 w-4 mr-2" />
+                <Calendar className="h-4 w-4 mr-2 shrink-0" />
                 Add to Calendar
               </Button>
             )}

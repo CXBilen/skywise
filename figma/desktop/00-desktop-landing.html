@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1440, height=900">
+  <title>SkyWise - Desktop Landing Page</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      width: 1440px;
+      height: 900px;
+      background: linear-gradient(135deg, #f0f9ff 0%, #ffffff 50%, #fffbeb 100%);
+      overflow: hidden;
+    }
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 80px;
+      background: rgba(255,255,255,0.8);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid #e2e8f0;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .logo-icon {
+      width: 36px;
+      height: 36px;
+      background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .logo-icon svg {
+      width: 20px;
+      height: 20px;
+      color: white;
+    }
+    .logo-text {
+      font-size: 22px;
+      font-weight: 700;
+      color: #0f172a;
+    }
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+    }
+    nav a {
+      font-size: 15px;
+      color: #64748b;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    nav a:hover {
+      color: #0ea5e9;
+    }
+    .btn-nav {
+      padding: 10px 20px;
+      background: #0ea5e9;
+      color: white;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 14px;
+      text-decoration: none;
+    }
+    .hero {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 60px 80px;
+      height: calc(100% - 77px);
+    }
+    .hero-content {
+      max-width: 560px;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      background: #dbeafe;
+      border-radius: 20px;
+      font-size: 13px;
+      color: #0369a1;
+      font-weight: 500;
+      margin-bottom: 24px;
+    }
+    .badge svg {
+      width: 16px;
+      height: 16px;
+    }
+    h1 {
+      font-size: 52px;
+      font-weight: 700;
+      color: #0f172a;
+      line-height: 1.1;
+      margin-bottom: 20px;
+    }
+    h1 span {
+      background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero-desc {
+      font-size: 18px;
+      color: #64748b;
+      line-height: 1.7;
+      margin-bottom: 36px;
+    }
+    .hero-buttons {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 48px;
+    }
+    .btn-primary {
+      padding: 18px 32px;
+      background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+      border: none;
+      border-radius: 14px;
+      color: white;
+      font-size: 16px;
+      font-weight: 600;
+      box-shadow: 0 8px 24px -8px rgba(14, 165, 233, 0.5);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn-primary svg {
+      width: 20px;
+      height: 20px;
+    }
+    .btn-secondary {
+      padding: 18px 32px;
+      background: white;
+      border: 2px solid #e2e8f0;
+      border-radius: 14px;
+      color: #475569;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn-secondary svg {
+      width: 20px;
+      height: 20px;
+    }
+    .trust-badges {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+    .trust-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      color: #64748b;
+    }
+    .trust-badge svg {
+      width: 20px;
+      height: 20px;
+      color: #10b981;
+    }
+    .hero-image {
+      width: 600px;
+      height: 500px;
+      background: white;
+      border-radius: 24px;
+      box-shadow: 0 32px 64px -16px rgba(0,0,0,0.1);
+      border: 1px solid #e2e8f0;
+      overflow: hidden;
+      position: relative;
+    }
+    .chat-preview {
+      padding: 24px;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+    .chat-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid #f1f5f9;
+    }
+    .chat-avatar {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .chat-avatar svg {
+      width: 20px;
+      height: 20px;
+      color: white;
+    }
+    .chat-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: #0f172a;
+    }
+    .chat-subtitle {
+      font-size: 13px;
+      color: #64748b;
+    }
+    .messages {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .message {
+      max-width: 85%;
+      padding: 14px 18px;
+      border-radius: 16px;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+    .message.user {
+      align-self: flex-end;
+      background: #0ea5e9;
+      color: white;
+      border-bottom-right-radius: 6px;
+    }
+    .message.bot {
+      align-self: flex-start;
+      background: #f1f5f9;
+      color: #334155;
+      border-bottom-left-radius: 6px;
+    }
+    .flight-card-preview {
+      background: white;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 16px;
+      margin-top: 8px;
+    }
+    .flight-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .flight-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .airline-logo {
+      width: 36px;
+      height: 36px;
+      background: #dbeafe;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 700;
+      color: #0369a1;
+    }
+    .flight-details {
+      font-size: 13px;
+    }
+    .flight-number {
+      font-weight: 600;
+      color: #0f172a;
+    }
+    .flight-route {
+      color: #64748b;
+    }
+    .flight-price {
+      font-size: 18px;
+      font-weight: 700;
+      color: #0f172a;
+    }
+    .fits-badge {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 10px;
+      background: #d1fae5;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 500;
+      color: #059669;
+      margin-top: 8px;
+    }
+    .fits-badge svg {
+      width: 14px;
+      height: 14px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <div class="logo-icon">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/>
+        </svg>
+      </div>
+      <span class="logo-text">SkyWise</span>
+    </div>
+    <nav>
+      <a href="#">Features</a>
+      <a href="#">How it works</a>
+      <a href="#">Pricing</a>
+      <a href="#" class="btn-nav">Start Booking</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div class="hero-content">
+      <div class="badge">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+        </svg>
+        AI-Powered Travel Assistant
+      </div>
+      <h1>Book flights with <span>natural language</span></h1>
+      <p class="hero-desc">Just tell SkyWise where you want to go. Our AI understands your schedule, detects conflicts, and helps you fly smarter.</p>
+      <div class="hero-buttons">
+        <button class="btn-primary">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+          </svg>
+          Start Chatting
+        </button>
+        <button class="btn-secondary">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="5 3 19 12 5 21 5 3"/>
+          </svg>
+          Watch Demo
+        </button>
+      </div>
+      <div class="trust-badges">
+        <div class="trust-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          </svg>
+          Read-only email access
+        </div>
+        <div class="trust-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 11 12 14 22 4"/>
+            <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+          </svg>
+          Undo any action
+        </div>
+      </div>
+    </div>
+    <div class="hero-image">
+      <div class="chat-preview">
+        <div class="chat-header">
+          <div class="chat-avatar">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/>
+            </svg>
+          </div>
+          <div>
+            <div class="chat-title">SkyWise</div>
+            <div class="chat-subtitle">Your AI travel assistant</div>
+          </div>
+        </div>
+        <div class="messages">
+          <div class="message user">Book me a flight to San Francisco next Tuesday</div>
+          <div class="message bot">
+            I found 3 flights that fit your schedule. Here's the best option:
+            <div class="flight-card-preview">
+              <div class="flight-row">
+                <div class="flight-info">
+                  <div class="airline-logo">UA</div>
+                  <div class="flight-details">
+                    <div class="flight-number">UA 442</div>
+                    <div class="flight-route">JFK → SFO • 8:30 AM</div>
+                  </div>
+                </div>
+                <div class="flight-price">$245</div>
+              </div>
+              <div class="fits-badge">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="20 6 9 17 4 12"/>
+                </svg>
+                Fits your schedule
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</body>
+</html>

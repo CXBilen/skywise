@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=375, height=812">
+  <title>SkyWise - Documentation</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      width: 375px;
+      height: 812px;
+      background: #f8fafc;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      display: flex;
+      align-items: center;
+      padding: 16px 20px;
+      background: white;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    .back-btn { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; }
+    .back-btn svg { width: 20px; height: 20px; color: #64748b; }
+    .header-title { flex: 1; font-size: 17px; font-weight: 600; color: #0f172a; margin-left: 8px; }
+    main { flex: 1; overflow-y: auto; }
+    .doc-header {
+      padding: 24px 20px;
+      background: white;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    .doc-header h1 { font-size: 24px; font-weight: 700; color: #0f172a; margin-bottom: 8px; }
+    .doc-header p { font-size: 14px; color: #64748b; line-height: 1.5; }
+    .section { padding: 20px; }
+    .section-title {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #94a3b8;
+      margin-bottom: 12px;
+    }
+    .doc-card {
+      background: white;
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      margin-bottom: 12px;
+      overflow: hidden;
+    }
+    .doc-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 16px;
+      border-bottom: 1px solid #f1f5f9;
+    }
+    .doc-item:last-child { border-bottom: none; }
+    .doc-icon {
+      width: 40px;
+      height: 40px;
+      background: #f0f9ff;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .doc-icon svg { width: 20px; height: 20px; color: #0ea5e9; }
+    .doc-info { flex: 1; }
+    .doc-info h3 { font-size: 15px; font-weight: 600; color: #0f172a; margin-bottom: 2px; }
+    .doc-info p { font-size: 13px; color: #64748b; }
+    .chevron svg { width: 16px; height: 16px; color: #94a3b8; }
+    .principle-card {
+      background: white;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 12px;
+    }
+    .principle-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+    .principle-icon {
+      width: 36px;
+      height: 36px;
+      background: #f0f9ff;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .principle-icon svg { width: 18px; height: 18px; color: #0ea5e9; }
+    .principle-title { font-size: 14px; font-weight: 600; color: #0f172a; }
+    .principle-desc { font-size: 13px; color: #64748b; line-height: 1.5; }
+    .bottom-nav {
+      display: flex;
+      background: white;
+      border-top: 1px solid #e2e8f0;
+      padding: 8px 0 24px;
+    }
+    .nav-item {
+      flex: 1;
+      display: flex; flex-direction: column; align-items: center; gap: 4px;
+      padding: 8px;
+      text-decoration: none;
+    }
+    .nav-item svg { width: 24px; height: 24px; color: #94a3b8; }
+    .nav-item span { font-size: 11px; color: #94a3b8; }
+    .nav-item.active svg { color: #0ea5e9; }
+    .nav-item.active span { color: #0ea5e9; font-weight: 500; }
+  </style>
+</head>
+<body>
+  <header>
+    <button class="back-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="15 18 9 12 15 6"/>
+      </svg>
+    </button>
+    <span class="header-title">Documentation</span>
+  </header>
+  <main>
+    <div class="doc-header">
+      <h1>Help & Docs</h1>
+      <p>Learn how to use SkyWise to manage your flights with AI assistance.</p>
+    </div>
+    <div class="section">
+      <div class="section-title">Getting Started</div>
+      <div class="doc-card">
+        <div class="doc-item">
+          <div class="doc-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"/>
+              <polyline points="12 6 12 12 16 14"/>
+            </svg>
+          </div>
+          <div class="doc-info">
+            <h3>Quick Start Guide</h3>
+            <p>Get started in 2 minutes</p>
+          </div>
+          <div class="chevron">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="9 18 15 12 9 6"/>
+            </svg>
+          </div>
+        </div>
+        <div class="doc-item">
+          <div class="doc-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+            </svg>
+          </div>
+          <div class="doc-info">
+            <h3>Chat Interface</h3>
+            <p>Book flights with natural language</p>
+          </div>
+          <div class="chevron">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="9 18 15 12 9 6"/>
+            </svg>
+          </div>
+        </div>
+        <div class="doc-item">
+          <div class="doc-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+              <polyline points="22,6 12,13 2,6"/>
+            </svg>
+          </div>
+          <div class="doc-info">
+            <h3>Email Import</h3>
+            <p>Auto-detect flight confirmations</p>
+          </div>
+          <div class="chevron">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="9 18 15 12 9 6"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-title">Design Principles</div>
+      <div class="principle-card">
+        <div class="principle-header">
+          <div class="principle-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+              <circle cx="12" cy="7" r="4"/>
+            </svg>
+          </div>
+          <span class="principle-title">AI Suggests, User Decides</span>
+        </div>
+        <p class="principle-desc">The AI recommends options but never acts without your confirmation.</p>
+      </div>
+      <div class="principle-card">
+        <div class="principle-header">
+          <div class="principle-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="1 4 1 10 7 10"/>
+              <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/>
+            </svg>
+          </div>
+          <span class="principle-title">Always Reversible</span>
+        </div>
+        <p class="principle-desc">Undo is available for all actions with a 15-second grace period.</p>
+      </div>
+      <div class="principle-card">
+        <div class="principle-header">
+          <div class="principle-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+              <circle cx="12" cy="12" r="3"/>
+            </svg>
+          </div>
+          <span class="principle-title">Show Your Work</span>
+        </div>
+        <p class="principle-desc">Confidence levels and data sources are always visible.</p>
+      </div>
+    </div>
+  </main>
+  <nav class="bottom-nav">
+    <a href="#" class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+      </svg>
+      <span>Chat</span>
+    </a>
+    <a href="#" class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+        <polyline points="14 2 14 8 20 8"/>
+      </svg>
+      <span>Trips</span>
+    </a>
+    <a href="#" class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+        <polyline points="22,6 12,13 2,6"/>
+      </svg>
+      <span>Import</span>
+    </a>
+    <a href="#" class="nav-item active">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="10"/>
+        <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+        <line x1="12" y1="17" x2="12.01" y2="17"/>
+      </svg>
+      <span>Help</span>
+    </a>
+  </nav>
+</body>
+</html>

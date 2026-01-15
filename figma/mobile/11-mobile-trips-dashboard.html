@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=375, height=812">
+  <title>SkyWise - Mobile Trips Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      width: 375px;
+      height: 812px;
+      background: #f8fafc;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px;
+      background: white;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .logo-icon {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .logo-icon svg {
+      width: 18px;
+      height: 18px;
+      color: white;
+    }
+    .logo-text {
+      font-size: 18px;
+      font-weight: 700;
+      color: #0f172a;
+    }
+    .avatar {
+      width: 32px;
+      height: 32px;
+      background: #e2e8f0;
+      border-radius: 50%;
+    }
+    main {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+    }
+    .page-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+    .page-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .page-icon {
+      width: 44px;
+      height: 44px;
+      background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .page-icon svg {
+      width: 22px;
+      height: 22px;
+      color: white;
+    }
+    h1 {
+      font-size: 22px;
+      font-weight: 700;
+      color: #0f172a;
+    }
+    .trip-count {
+      font-size: 13px;
+      color: #64748b;
+    }
+    .btn-new {
+      width: 40px;
+      height: 40px;
+      background: #0ea5e9;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+    .btn-new svg {
+      width: 20px;
+      height: 20px;
+    }
+    .tabs {
+      display: flex;
+      gap: 4px;
+      background: #f1f5f9;
+      border-radius: 10px;
+      padding: 4px;
+      margin-bottom: 20px;
+    }
+    .tab {
+      flex: 1;
+      padding: 10px 12px;
+      font-size: 13px;
+      font-weight: 500;
+      color: #64748b;
+      background: transparent;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      text-align: center;
+    }
+    .tab.active {
+      background: white;
+      color: #0f172a;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .trips-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .trip-card {
+      background: white;
+      border-radius: 14px;
+      border: 1px solid #e2e8f0;
+      overflow: hidden;
+    }
+    .trip-header {
+      padding: 16px;
+    }
+    .trip-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+    .trip-main {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .trip-icon {
+      width: 40px;
+      height: 40px;
+      background: #f0f9ff;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .trip-icon svg {
+      width: 20px;
+      height: 20px;
+      color: #0ea5e9;
+    }
+    .trip-info h3 {
+      font-size: 15px;
+      font-weight: 600;
+      color: #0f172a;
+      margin-bottom: 2px;
+    }
+    .trip-meta {
+      font-size: 13px;
+      color: #64748b;
+    }
+    .status-badge {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+    .status-badge.synced {
+      background: #d1fae5;
+      color: #059669;
+    }
+    .status-badge.pending {
+      background: #fef3c7;
+      color: #d97706;
+    }
+    .status-badge svg {
+      width: 12px;
+      height: 12px;
+    }
+    .trip-expanded {
+      padding: 0 16px 16px;
+      border-top: 1px solid #f1f5f9;
+    }
+    .flight-segment {
+      padding: 14px 0;
+      border-bottom: 1px solid #f1f5f9;
+    }
+    .flight-segment:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+    .segment-top {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .airline-logo {
+      width: 32px;
+      height: 32px;
+      background: #dbeafe;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 700;
+      color: #0369a1;
+    }
+    .segment-info {
+      flex: 1;
+    }
+    .segment-info h4 {
+      font-size: 13px;
+      font-weight: 600;
+      color: #0f172a;
+    }
+    .segment-info span {
+      font-size: 12px;
+      color: #64748b;
+    }
+    .segment-route {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 12px;
+      background: #f8fafc;
+      border-radius: 8px;
+    }
+    .route-point {
+      text-align: center;
+    }
+    .route-point .time {
+      font-size: 15px;
+      font-weight: 600;
+      color: #0f172a;
+    }
+    .route-point .code {
+      font-size: 11px;
+      color: #64748b;
+    }
+    .route-arrow {
+      display: flex;
+      align-items: center;
+      color: #94a3b8;
+    }
+    .route-arrow svg {
+      width: 20px;
+      height: 20px;
+    }
+    .segment-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+    }
+    .action-btn {
+      flex: 1;
+      padding: 10px;
+      font-size: 13px;
+      font-weight: 500;
+      border-radius: 8px;
+      cursor: pointer;
+      text-align: center;
+    }
+    .action-btn.edit {
+      background: #f1f5f9;
+      color: #475569;
+      border: none;
+    }
+    .action-btn.cancel {
+      background: white;
+      color: #ef4444;
+      border: 1px solid #fecaca;
+    }
+    .bottom-nav {
+      display: flex;
+      background: white;
+      border-top: 1px solid #e2e8f0;
+      padding: 8px 0;
+      padding-bottom: 24px;
+    }
+    .nav-item {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      padding: 8px;
+      text-decoration: none;
+    }
+    .nav-item svg {
+      width: 24px;
+      height: 24px;
+      color: #94a3b8;
+    }
+    .nav-item span {
+      font-size: 11px;
+      color: #94a3b8;
+    }
+    .nav-item.active svg {
+      color: #0ea5e9;
+    }
+    .nav-item.active span {
+      color: #0ea5e9;
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <div class="logo-icon">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/>
+        </svg>
+      </div>
+      <span class="logo-text">SkyWise</span>
+    </div>
+    <div class="avatar"></div>
+  </header>
+
+  <main>
+    <div class="page-header">
+      <div class="page-title">
+        <div class="page-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+          </svg>
+        </div>
+        <div>
+          <h1>My Trips</h1>
+          <p class="trip-count">3 upcoming</p>
+        </div>
+      </div>
+      <button class="btn-new">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="12" y1="5" x2="12" y2="19"/>
+          <line x1="5" y1="12" x2="19" y2="12"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="tabs">
+      <button class="tab active">All</button>
+      <button class="tab">Upcoming</button>
+      <button class="tab">Completed</button>
+    </div>
+
+    <div class="trips-list">
+      <!-- Trip 1 - Expanded -->
+      <div class="trip-card">
+        <div class="trip-header">
+          <div class="trip-top">
+            <div class="trip-main">
+              <div class="trip-icon">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/>
+                </svg>
+              </div>
+              <div class="trip-info">
+                <h3>NYC → SFO</h3>
+                <span class="trip-meta">Jan 28-31 • Round trip</span>
+              </div>
+            </div>
+            <div class="status-badge synced">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+              Synced
+            </div>
+          </div>
+        </div>
+        <div class="trip-expanded">
+          <div class="flight-segment">
+            <div class="segment-top">
+              <div class="airline-logo">UA</div>
+              <div class="segment-info">
+                <h4>UA 442 • Economy</h4>
+                <span>January 28, 2026</span>
+              </div>
+            </div>
+            <div class="segment-route">
+              <div class="route-point">
+                <div class="time">11:30</div>
+                <div class="code">JFK</div>
+              </div>
+              <div class="route-arrow">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="5" y1="12" x2="19" y2="12"/>
+                  <polyline points="12 5 19 12 12 19"/>
+                </svg>
+              </div>
+              <div class="route-point">
+                <div class="time">14:45</div>
+                <div class="code">SFO</div>
+              </div>
+            </div>
+            <div class="segment-actions">
+              <button class="action-btn edit">Edit</button>
+              <button class="action-btn cancel">Cancel</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Trip 2 - Collapsed -->
+      <div class="trip-card">
+        <div class="trip-header">
+          <div class="trip-top">
+            <div class="trip-main">
+              <div class="trip-icon">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/>
+                </svg>
+              </div>
+              <div class="trip-info">
+                <h3>CHI → MIA</h3>
+                <span class="trip-meta">Feb 15 • One way</span>
+              </div>
+            </div>
+            <div class="status-badge pending">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/>
+                <polyline points="12 6 12 12 16 14"/>
+              </svg>
+              Pending
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <nav class="bottom-nav">
+    <a href="#" class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+      </svg>
+      <span>Chat</span>
+    </a>
+    <a href="#" class="nav-item active">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+        <polyline points="14 2 14 8 20 8"/>
+      </svg>
+      <span>Trips</span>
+    </a>
+    <a href="#" class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+        <polyline points="22,6 12,13 2,6"/>
+      </svg>
+      <span>Import</span>
+    </a>
+    <a href="#" class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="3"/>
+        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+      </svg>
+      <span>Settings</span>
+    </a>
+  </nav>
+</body>
+</html>

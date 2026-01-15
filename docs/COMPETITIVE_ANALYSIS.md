@@ -428,6 +428,6 @@ The travel booking market is dominated by OTAs (Online Travel Agencies) and meta
 
 ---
 
-*Document Version: 1.0*
-*Last Updated: January 2025*
+*Document Version: 1.2 (v0.0.4)*
+*Last Updated: January 2026*
 *Author: Product Strategy Team*

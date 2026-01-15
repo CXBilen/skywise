@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=375, height=812">
+  <title>SkyWise - Import Success</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      width: 375px;
+      height: 812px;
+      background: #f8fafc;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 24px;
+    }
+    .success-icon {
+      width: 72px; height: 72px;
+      background: #d1fae5;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 20px;
+    }
+    .success-icon svg { width: 36px; height: 36px; color: #059669; }
+    h2 { font-size: 24px; font-weight: 700; color: #0f172a; margin-bottom: 8px; text-align: center; }
+    .subtitle { font-size: 15px; color: #64748b; margin-bottom: 32px; text-align: center; line-height: 1.5; }
+    .actions { width: 100%; display: flex; flex-direction: column; gap: 12px; }
+    .btn-primary {
+      width: 100%; padding: 16px;
+      background: #0ea5e9; border: none; border-radius: 12px;
+      font-size: 15px; font-weight: 600; color: white;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .btn-primary svg { width: 18px; height: 18px; }
+    .btn-secondary {
+      width: 100%; padding: 16px;
+      background: white; border: 2px solid #e2e8f0; border-radius: 12px;
+      font-size: 15px; font-weight: 600; color: #475569;
+    }
+  </style>
+</head>
+<body>
+  <div class="success-icon">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <polyline points="20 6 9 17 4 12"/>
+    </svg>
+  </div>
+  <h2>Flight Imported!</h2>
+  <p class="subtitle">Your flight has been added to My Trips and synced with your calendar.</p>
+  <div class="actions">
+    <button class="btn-primary">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+        <polyline points="14 2 14 8 20 8"/>
+      </svg>
+      View My Trips
+    </button>
+    <button class="btn-secondary">Import Another</button>
+  </div>
+</body>
+</html>

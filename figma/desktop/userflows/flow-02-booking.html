@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=5600, height=1000">
+  <title>SkyWise - Flight Booking User Flow (Desktop)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      width: 5600px;
+      height: 1000px;
+      background: #f1f5f9;
+      padding: 40px;
+      display: flex;
+      align-items: flex-start;
+      gap: 40px;
+    }
+    .flow-container { display: flex; align-items: center; gap: 60px; }
+    .flow-step { display: flex; flex-direction: column; align-items: center; }
+    .step-label {
+      background: #0ea5e9; color: white;
+      padding: 8px 16px; border-radius: 20px;
+      font-size: 13px; font-weight: 600; margin-bottom: 16px;
+    }
+    .screen-frame {
+      background: white; border-radius: 16px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+      overflow: hidden; width: 720px; height: 450px;
+    }
+    .screen-content { width: 100%; height: 100%; display: flex; flex-direction: column; }
+    .arrow { display: flex; align-items: center; color: #94a3b8; }
+    .arrow svg { width: 40px; height: 40px; }
+    .step-notes { margin-top: 12px; font-size: 12px; color: #64748b; text-align: center; max-width: 200px; }
+    /* Header */
+    .header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 12px 24px; background: white; border-bottom: 1px solid #e2e8f0;
+    }
+    .logo { display: flex; align-items: center; gap: 8px; }
+    .logo-icon {
+      width: 28px; height: 28px;
+      background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);
+      border-radius: 8px; display: flex; align-items: center; justify-content: center;
+    }
+    .logo-icon svg { width: 14px; height: 14px; color: white; }
+    .logo-text { font-size: 16px; font-weight: 700; color: #0f172a; }
+    /* Chat Layout */
+    .chat-container { flex: 1; display: flex; }
+    .chat-main { flex: 1; display: flex; flex-direction: column; background: #f8fafc; }
+    .chat-messages { flex: 1; padding: 16px; overflow-y: auto; }
+    .message { margin-bottom: 12px; max-width: 80%; }
+    .message.user { margin-left: auto; }
+    .message-bubble {
+      padding: 12px 16px; border-radius: 16px;
+      font-size: 13px; line-height: 1.5;
+    }
+    .message.user .message-bubble { background: #0ea5e9; color: white; border-bottom-right-radius: 4px; }
+    .message.assistant .message-bubble { background: white; color: #0f172a; border-bottom-left-radius: 4px; }
+    .chat-input-area { padding: 12px 16px; background: white; border-top: 1px solid #e2e8f0; }
+    .chat-input { width: 100%; padding: 12px 16px; border: 1px solid #e2e8f0; border-radius: 24px; font-size: 13px; }
+    /* Side Panel */
+    .side-panel { width: 220px; background: white; border-left: 1px solid #e2e8f0; padding: 16px; overflow-y: auto; }
+    .side-panel h4 { font-size: 12px; font-weight: 600; color: #0f172a; margin-bottom: 12px; }
+    /* Flight Card */
+    .flight-option {
+      background: #f8fafc; border: 1px solid #e2e8f0;
+      border-radius: 10px; padding: 12px; margin-bottom: 10px;
+    }
+    .flight-option.selected { border-color: #0ea5e9; background: #f0f9ff; }
+    .flight-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+    .flight-code { font-size: 13px; font-weight: 600; color: #0f172a; }
+    .flight-price { font-size: 14px; font-weight: 700; color: #0ea5e9; }
+    .flight-route { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+    .airport { text-align: center; }
+    .airport-code { font-size: 12px; font-weight: 600; color: #0f172a; }
+    .airport-time { font-size: 10px; color: #64748b; }
+    .flight-line { flex: 1; height: 1px; background: #e2e8f0; position: relative; }
+    .flight-line::after {
+      content: '✈'; position: absolute; top: -8px; left: 50%;
+      transform: translateX(-50%); font-size: 12px;
+    }
+    .flight-meta { display: flex; gap: 12px; font-size: 10px; color: #64748b; }
+    .calendar-fit {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 3px 8px; border-radius: 4px; font-size: 10px; font-weight: 500;
+    }
+    .calendar-fit.fits { background: #d1fae5; color: #059669; }
+    .calendar-fit.conflict { background: #fef3c7; color: #d97706; }
+    /* Trip Summary */
+    .trip-summary {
+      background: white; border: 1px solid #e2e8f0;
+      border-radius: 12px; padding: 16px;
+    }
+    .trip-summary h3 { font-size: 14px; font-weight: 600; color: #0f172a; margin-bottom: 12px; }
+    .trip-detail { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 8px; }
+    .trip-detail-label { color: #64748b; }
+    .trip-detail-value { color: #0f172a; font-weight: 500; }
+    .confirm-btn {
+      width: 100%; margin-top: 12px; padding: 12px;
+      background: #0ea5e9; color: white; border: none;
+      border-radius: 8px; font-size: 13px; font-weight: 600;
+    }
+    /* Success State */
+    .success-icon {
+      width: 48px; height: 48px; background: #d1fae5;
+      border-radius: 50%; display: flex; align-items: center;
+      justify-content: center; margin: 0 auto 12px;
+    }
+    .success-icon svg { width: 24px; height: 24px; color: #059669; }
+    .undo-banner {
+      background: #1e293b; color: white; padding: 10px 16px;
+      border-radius: 8px; font-size: 12px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .undo-btn { color: #38bdf8; font-weight: 500; }
+  </style>
+</head>
+<body>
+  <div class="flow-container">
+    <!-- Step 1: User Request -->
+    <div class="flow-step">
+      <span class="step-label">1. User Request</span>
+      <div class="screen-frame">
+        <div class="screen-content">
+          <div class="header">
+            <div class="logo">
+              <div class="logo-icon">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/>
+                </svg>
+              </div>
+              <span class="logo-text">SkyWise</span>
+            </div>
+          </div>
+          <div class="chat-container">
+            <div class="chat-main">
+              <div class="chat-messages">
+                <div class="message user">
+                  <div class="message-bubble">I need to fly to LA next Friday for a meeting</div>
+                </div>
+                <div class="message assistant">
+                  <div class="message-bubble">I'll help you find flights from JFK to LAX for next Friday, April 5th. Let me search for the best options...</div>
+                </div>
+              </div>
+              <div class="chat-input-area">
+                <input type="text" class="chat-input" placeholder="Type your message..." />
+              </div>
+            </div>
+            <div class="side-panel">
+              <h4>Detected</h4>
+              <div style="font-size: 11px; color: #64748b; margin-bottom: 8px;">
+                <div>📍 From: JFK</div>
+                <div>📍 To: LAX</div>
+                <div>📅 Date: Apr 5</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="step-notes">Natural language intent detection</p>
+    </div>
+
+    <div class="arrow">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="5" y1="12" x2="19" y2="12"/>
+        <polyline points="12 5 19 12 12 19"/>
+      </svg>
+    </div>
+
+    <!-- Step 2: Flight Options -->
+    <div class="flow-step">
+      <span class="step-label">2. Flight Options</span>
+      <div class="screen-frame">
+        <div class="screen-content">
+          <div class="header">
+            <div class="logo">
+              <div class="logo-icon">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/>
+                </svg>
+              </div>
+              <span class="logo-text">SkyWise</span>
+            </div>
+          </div>
+          <div class="chat-container">
+            <div class="chat-main">
+              <div class="chat-messages">
+                <div class="message assistant">
+                  <div class="message-bubble">
+                    Found 3 flights for April 5th. Here are your options:
+                  </div>
+                </div>
+              </div>
+              <div class="chat-input-area">
+                <input type="text" class="chat-input" placeholder="Type your message..." />
+              </div>
+            </div>
+            <div class="side-panel">
+              <h4>Flight Options</h4>
+              <div class="flight-option selected">
+                <div class="flight-header">
+                  <span class="flight-code">DL 1247</span>
+                  <span class="flight-price">$289</span>
+                </div>
+                <div class="flight-route">
+                  <div class="airport">
+                    <div class="airport-code">JFK</div>
+                    <div class="airport-time">8:00 AM</div>
+                  </div>
+                  <div class="flight-line"></div>
+                  <div class="airport">
+                    <div class="airport-code">LAX</div>
+                    <div class="airport-time">11:30 AM</div>
+                  </div>
+                </div>
+                <div class="flight-meta">
+                  <span>5h 30m</span>
+                  <span>Nonstop</span>
+                  <span class="calendar-fit fits">✓ Fits</span>
+                </div>
+              </div>
+              <div class="flight-option">
+                <div class="flight-header">
+                  <span class="flight-code">UA 456</span>
+                  <span class="flight-price">$245</span>
+                </div>
+                <div class="flight-route">
+                  <div class="airport">
+                    <div class="airport-code">JFK</div>
+                    <div class="airport-time">2:15 PM</div>
+                  </div>
+                  <div class="flight-line"></div>
+                  <div class="airport">
+                    <div class="airport-code">LAX</div>
+                    <div class="airport-time">5:45 PM</div>
+                  </div>
+                </div>
+                <div class="flight-meta">
+                  <span>5h 30m</span>
+                  <span>Nonstop</span>
+                  <span class="calendar-fit conflict">⚠ Conflict</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="step-notes">Shows calendar fit status per option</p>
+    </div>
+
+    <div class="arrow">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="5" y1="12" x2="19" y2="12"/>
+        <polyline points="12 5 19 12 12 19"/>
+      </svg>
+    </div>
+
+    <!-- Step 3: Selection -->
+    <div class="flow-step">
+      <span class="step-label">3. User Selection</span>
+      <div class="screen-frame">
+        <div class="screen-content">
+          <div class="header">
+            <div class="logo">
+              <div class="logo-icon">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/>
+                </svg>
+              </div>
+              <span class="logo-text">SkyWise</span>
+            </div>
+          </div>
+          <div class="chat-container">
+            <div class="chat-main">
+              <div class="chat-messages">
+                <div class="message user">
+                  <div class="message-bubble">I'll take the morning Delta flight</div>
+                </div>
+                <div class="message assistant">
+                  <div class="message-bubble">Great choice! DL 1247 at 8:00 AM fits perfectly with your schedule. Would you like me to book this flight?</div>
+                </div>
+              </div>
+              <div class="chat-input-area">
+                <input type="text" class="chat-input" placeholder="Type your message..." />
+              </div>
+            </div>
+            <div class="side-panel">
+              <h4>Selected Flight</h4>
+              <div class="trip-summary">
+                <h3>DL 1247</h3>
+                <div class="trip-detail">
+                  <span class="trip-detail-label">Route</span>
+                  <span class="trip-detail-value">JFK → LAX</span>
+                </div>
+                <div class="trip-detail">
+                  <span class="trip-detail-label">Date</span>
+                  <span class="trip-detail-value">Apr 5, 2025</span>
+                </div>
+                <div class="trip-detail">
+                  <span class="trip-detail-label">Time</span>
+                  <span class="trip-detail-value">8:00 AM</span>
+                </div>
+                <div class="trip-detail">
+                  <span class="trip-detail-label">Price</span>
+                  <span class="trip-detail-value">$289</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="step-notes">User selects preferred option</p>
+    </div>
+
+    <div class="arrow">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="5" y1="12" x2="19" y2="12"/>
+        <polyline points="12 5 19 12 12 19"/>
+      </svg>
+    </div>
+
+    <!-- Step 4: Confirmation -->
+    <div class="flow-step">
+      <span class="step-label">4. Confirm Booking</span>
+      <div class="screen-frame">
+        <div class="screen-content">
+          <div class="header">
+            <div class="logo">
+              <div class="logo-icon">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/>
+                </svg>
+              </div>
+              <span class="logo-text">SkyWise</span>
+            </div>
+          </div>
+          <div class="chat-container">
+            <div class="chat-main">
+              <div class="chat-messages">
+                <div class="message user">
+                  <div class="message-bubble">Yes, book it!</div>
+                </div>
+                <div class="message assistant">
+                  <div class="message-bubble">Please confirm the booking details on the right. I'll also add this to your Google Calendar.</div>
+                </div>
+              </div>
+              <div class="chat-input-area">
+                <input type="text" class="chat-input" placeholder="Type your message..." />
+              </div>
+            </div>
+            <div class="side-panel">
+              <h4>Confirm Booking</h4>
+              <div class="trip-summary">
+                <h3>Trip to Los Angeles</h3>
+                <div class="trip-detail">
+                  <span class="trip-detail-label">Flight</span>
+                  <span class="trip-detail-value">DL 1247</span>
+                </div>
+                <div class="trip-detail">
+                  <span class="trip-detail-label">Route</span>
+                  <span class="trip-detail-value">JFK → LAX</span>
+                </div>
+                <div class="trip-detail">
+                  <span class="trip-detail-label">Date</span>
+                  <span class="trip-detail-value">Apr 5, 2025</span>
+                </div>
+                <div class="trip-detail">
+                  <span class="trip-detail-label">Depart</span>
+                  <span class="trip-detail-value">8:00 AM</span>
+                </div>
+                <div class="trip-detail">
+                  <span class="trip-detail-label">Arrive</span>
+                  <span class="trip-detail-value">11:30 AM</span>
+                </div>
+                <div class="trip-detail">
+                  <span class="trip-detail-label">Total</span>
+                  <span class="trip-detail-value" style="color: #0ea5e9;">$289</span>
+                </div>
+                <div style="margin-top: 12px; padding: 8px; background: #f0f9ff; border-radius: 6px; font-size: 11px; color: #0369a1;">
+                  📅 Will be added to Google Calendar
+                </div>
+                <button class="confirm-btn">Confirm & Book</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="step-notes">Preview before any action is taken</p>
+    </div>
+
+    <div class="arrow">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="5" y1="12" x2="19" y2="12"/>
+        <polyline points="12 5 19 12 12 19"/>
+      </svg>
+    </div>
+
+    <!-- Step 5: Success -->
+    <div class="flow-step">
+      <span class="step-label">5. Booking Complete</span>
+      <div class="screen-frame">
+        <div class="screen-content">
+          <div class="header">
+            <div class="logo">
+              <div class="logo-icon">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/>
+                </svg>
+              </div>
+              <span class="logo-text">SkyWise</span>
+            </div>
+          </div>
+          <div class="chat-container">
+            <div class="chat-main">
+              <div class="chat-messages">
+                <div class="message assistant">
+                  <div class="message-bubble">
+                    <div class="success-icon">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="20 6 9 17 4 12"/>
+                      </svg>
+                    </div>
+                    <div style="text-align: center;">
+                      <strong>Booking Confirmed!</strong><br/>
+                      Your flight to LA has been booked and added to your calendar.
+                    </div>
+                  </div>
+                </div>
+                <div style="padding: 8px;">
+                  <div class="undo-banner">
+                    <span>Added to calendar</span>
+                    <span class="undo-btn">Undo (12s)</span>
+                  </div>
+                </div>
+              </div>
+              <div class="chat-input-area">
+                <input type="text" class="chat-input" placeholder="Type your message..." />
+              </div>
+            </div>
+            <div class="side-panel">
+              <h4>Trip Booked</h4>
+              <div class="trip-summary" style="background: #f0fdf4; border-color: #bbf7d0;">
+                <div style="text-align: center; margin-bottom: 12px;">
+                  <div class="success-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <polyline points="20 6 9 17 4 12"/>
+                    </svg>
+                  </div>
+                </div>
+                <h3 style="text-align: center;">Los Angeles</h3>
+                <div class="trip-detail">
+                  <span class="trip-detail-label">Confirmation</span>
+                  <span class="trip-detail-value">ABC123</span>
+                </div>
+                <div class="trip-detail">
+                  <span class="trip-detail-label">Flight</span>
+                  <span class="trip-detail-value">DL 1247</span>
+                </div>
+                <div class="trip-detail">
+                  <span class="trip-detail-label">Date</span>
+                  <span class="trip-detail-value">Apr 5</span>
+                </div>
+                <button class="confirm-btn" style="background: #059669;">View in My Trips</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="step-notes">Undo available for 15 seconds</p>
+    </div>
+  </div>
+</body>
+</html>

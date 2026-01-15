@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=375, height=812">
+  <title>SkyWise - Import Scanning</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      width: 375px;
+      height: 812px;
+      background: #f8fafc;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 24px;
+    }
+    .scan-icon {
+      width: 80px;
+      height: 80px;
+      background: #f0f9ff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 24px;
+      position: relative;
+    }
+    .scan-icon svg { width: 40px; height: 40px; color: #0ea5e9; }
+    .scan-ring {
+      position: absolute;
+      inset: -6px;
+      border: 3px solid #0ea5e9;
+      border-radius: 50%;
+      border-top-color: transparent;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    h2 { font-size: 22px; font-weight: 700; color: #0f172a; margin-bottom: 8px; text-align: center; }
+    .subtitle { font-size: 15px; color: #64748b; margin-bottom: 24px; text-align: center; }
+    .progress-dots { display: flex; gap: 6px; }
+    .dot {
+      width: 8px; height: 8px;
+      background: #0ea5e9;
+      border-radius: 50%;
+      opacity: 0.3;
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+    .dot:nth-child(2) { animation-delay: 0.2s; }
+    .dot:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes pulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
+  </style>
+</head>
+<body>
+  <div class="scan-icon">
+    <div class="scan-ring"></div>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <circle cx="11" cy="11" r="8"/>
+      <path d="m21 21-4.35-4.35"/>
+    </svg>
+  </div>
+  <h2>Scanning Your Email</h2>
+  <p class="subtitle">Looking for flight confirmations...</p>
+  <div class="progress-dots">
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+  </div>
+</body>
+</html>

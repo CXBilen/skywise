@@ -130,46 +130,46 @@ export function FlightCard({
 
           {/* Flight Times */}
           <div className="flex items-center justify-between">
-            <div className="text-center">
-              <p className="text-2xl font-bold text-slate-900">
+            <div className="text-center shrink-0">
+              <p className="text-lg sm:text-2xl font-bold text-slate-900">
                 {formatTime(departureTime)}
               </p>
-              <p className="text-sm font-medium text-slate-600">
+              <p className="text-xs sm:text-sm font-medium text-slate-600">
                 {departureAirport}
               </p>
             </div>
 
-            <div className="flex-1 px-4">
+            <div className="flex-1 px-1.5 sm:px-4 min-w-0">
               <div className="relative flex items-center justify-center">
                 <div className="absolute inset-0 flex items-center">
                   <div className="w-full border-t-2 border-dashed border-slate-200" />
                 </div>
-                <div className="relative flex flex-col items-center bg-white px-2">
-                  <div className="flex items-center gap-1 text-slate-500">
-                    <Clock className="h-3.5 w-3.5" />
-                    <span className="text-xs font-medium">
+                <div className="relative flex flex-col items-center bg-white px-1.5 sm:px-2">
+                  <div className="flex items-center gap-0.5 sm:gap-1 text-slate-500">
+                    <Clock className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
+                    <span className="text-[10px] sm:text-xs font-medium whitespace-nowrap">
                       {formatDuration(duration)}
                     </span>
                   </div>
                   {stops > 0 ? (
-                    <span className="text-xs text-slate-400 mt-0.5">
+                    <span className="text-[10px] sm:text-xs text-slate-400 mt-0.5 whitespace-nowrap">
                       {stops} stop{stops > 1 ? "s" : ""}
                     </span>
                   ) : (
-                    <span className="text-xs text-emerald-600 font-medium mt-0.5">
+                    <span className="text-[10px] sm:text-xs text-emerald-600 font-medium mt-0.5 whitespace-nowrap">
                       Nonstop
                     </span>
                   )}
                 </div>
-                <Plane className="absolute right-0 h-4 w-4 text-sky-500 transform translate-x-1" />
+                <Plane className="absolute right-0 h-3 w-3 sm:h-4 sm:w-4 text-sky-500 transform translate-x-0.5 sm:translate-x-1 hidden sm:block" />
               </div>
             </div>
 
-            <div className="text-center">
-              <p className="text-2xl font-bold text-slate-900">
+            <div className="text-center shrink-0">
+              <p className="text-lg sm:text-2xl font-bold text-slate-900">
                 {formatTime(arrivalTime)}
               </p>
-              <p className="text-sm font-medium text-slate-600">
+              <p className="text-xs sm:text-sm font-medium text-slate-600">
                 {arrivalAirport}
               </p>
             </div>

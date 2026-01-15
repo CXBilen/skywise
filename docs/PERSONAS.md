@@ -204,7 +204,7 @@ Based on 12 user interviews and secondary research, we identified two primary pe
 ║   ────────────────────                                                        ║
 ║                                                                               ║
 ║   "I have a system that works, but it's held together with duct tape.        ║
-║    I screenshot everything, which is ridiculous in 2025."                    ║
+║    I screenshot everything, which is ridiculous in 2026."                    ║
 ║                                                                               ║
 ║   "If I could just forward my confirmation email and have everything         ║
 ║    automatically organized, I would cry tears of joy."                       ║
@@ -316,6 +316,6 @@ Based on 12 user interviews and secondary research, we identified two primary pe
 
 ---
 
-*Document Version: 1.0*
-*Last Updated: January 2025*
+*Document Version: 1.2 (v0.0.4)*
+*Last Updated: January 2026*
 *Research Team: UX Research*

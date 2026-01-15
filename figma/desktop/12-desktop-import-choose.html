@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1440, height=900">
+  <title>SkyWise - Import Wizard Choose Method</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      width: 1440px;
+      height: 900px;
+      background: #f8fafc;
+      overflow: hidden;
+    }
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 32px;
+      background: white;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .logo-icon {
+      width: 36px;
+      height: 36px;
+      background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .logo-icon svg {
+      width: 20px;
+      height: 20px;
+      color: white;
+    }
+    .logo-text {
+      font-size: 20px;
+      font-weight: 700;
+      color: #0f172a;
+    }
+    main {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 60px 40px;
+      text-align: center;
+    }
+    .page-icon {
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);
+      border-radius: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 24px;
+    }
+    .page-icon svg {
+      width: 40px;
+      height: 40px;
+      color: white;
+    }
+    h1 {
+      font-size: 28px;
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 12px;
+    }
+    .subtitle {
+      font-size: 16px;
+      color: #64748b;
+      margin-bottom: 48px;
+    }
+    .methods {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-bottom: 48px;
+    }
+    .method-card {
+      background: white;
+      border: 2px solid #e2e8f0;
+      border-radius: 20px;
+      padding: 32px;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: center;
+    }
+    .method-card:hover {
+      border-color: #0ea5e9;
+      box-shadow: 0 8px 32px -8px rgba(14, 165, 233, 0.2);
+    }
+    .method-icon {
+      width: 72px;
+      height: 72px;
+      background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+    }
+    .method-icon svg {
+      width: 36px;
+      height: 36px;
+      color: #0ea5e9;
+    }
+    .method-card h3 {
+      font-size: 20px;
+      font-weight: 600;
+      color: #0f172a;
+      margin-bottom: 12px;
+    }
+    .method-card p {
+      font-size: 14px;
+      color: #64748b;
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+    .method-tags {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+    }
+    .tag {
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+    .tag.recommended {
+      background: #d1fae5;
+      color: #059669;
+    }
+    .tag.default {
+      background: #f1f5f9;
+      color: #64748b;
+    }
+    .features-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .feature {
+      background: white;
+      border-radius: 16px;
+      border: 1px solid #e2e8f0;
+      padding: 24px;
+      text-align: center;
+    }
+    .feature-icon {
+      width: 48px;
+      height: 48px;
+      background: #f0f9ff;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 12px;
+    }
+    .feature-icon svg {
+      width: 24px;
+      height: 24px;
+      color: #0ea5e9;
+    }
+    .feature h4 {
+      font-size: 14px;
+      font-weight: 600;
+      color: #0f172a;
+      margin-bottom: 4px;
+    }
+    .feature p {
+      font-size: 13px;
+      color: #64748b;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <div class="logo-icon">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/>
+        </svg>
+      </div>
+      <span class="logo-text">SkyWise</span>
+    </div>
+  </header>
+
+  <main>
+    <div class="page-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+        <polyline points="22,6 12,13 2,6"/>
+      </svg>
+    </div>
+    <h1>Import Flights</h1>
+    <p class="subtitle">Choose how you'd like to import your flights</p>
+
+    <div class="methods">
+      <div class="method-card">
+        <div class="method-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"/>
+            <path d="m21 21-4.35-4.35"/>
+          </svg>
+        </div>
+        <h3>Automatic Discovery</h3>
+        <p>We'll scan your connected email for flight confirmations and show you what we find.</p>
+        <div class="method-tags">
+          <span class="tag recommended">Recommended</span>
+          <span class="tag default">Quick & Easy</span>
+        </div>
+      </div>
+
+      <div class="method-card">
+        <div class="method-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+          </svg>
+        </div>
+        <h3>Manual Entry</h3>
+        <p>Paste your flight confirmation email and we'll extract the details automatically.</p>
+        <div class="method-tags">
+          <span class="tag default">Copy & Paste</span>
+          <span class="tag default">Any Format</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="features-row">
+      <div class="feature">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+          </svg>
+        </div>
+        <h4>AI-Powered</h4>
+        <p>Smart extraction with confidence scores</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          </svg>
+        </div>
+        <h4>Secure</h4>
+        <p>Your data is never stored permanently</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+            <line x1="16" y1="2" x2="16" y2="6"/>
+            <line x1="8" y1="2" x2="8" y2="6"/>
+            <line x1="3" y1="10" x2="21" y2="10"/>
+          </svg>
+        </div>
+        <h4>Calendar Sync</h4>
+        <p>Add to calendar with one click</p>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

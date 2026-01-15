@@ -33,6 +33,8 @@ import {
   Heart,
   Brain,
   Plane,
+  Home,
+  FileText,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -86,11 +88,14 @@ export default function PresentationPage() {
     const interval = setInterval(() => {
       setProgress((prev) => {
         if (prev >= 100) {
-          if (currentSlide < SLIDES.length - 1) {
-            setCurrentSlide((s) => s + 1);
-          } else {
-            setIsPlaying(false);
-          }
+          setCurrentSlide((s) => {
+            if (s < SLIDES.length - 1) {
+              return s + 1;
+            } else {
+              setIsPlaying(false);
+              return s;
+            }
+          });
           return 0;
         }
         return prev + 2;
@@ -98,7 +103,7 @@ export default function PresentationPage() {
     }, 100);
 
     return () => clearInterval(interval);
-  }, [isPlaying, currentSlide]);
+  }, [isPlaying]);
 
   // Keyboard navigation
   useEffect(() => {
@@ -141,41 +146,51 @@ export default function PresentationPage() {
   return (
     <div
       ref={containerRef}
-      className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white overflow-hidden"
+      className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white overflow-x-hidden"
     >
       {/* Header */}
-      <header className="fixed top-0 left-0 right-0 z-50 px-6 py-4 flex items-center justify-between bg-slate-900/80 backdrop-blur-lg border-b border-white/10">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-sky-400 to-sky-600 flex items-center justify-center">
-            <Plane className="w-5 h-5 text-white" />
+      <header className="fixed top-0 left-0 right-0 z-50 bg-slate-900/80 backdrop-blur-lg border-b border-white/10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-sky-400 to-sky-600 flex items-center justify-center">
+              <Plane className="w-5 h-5 text-white" />
+            </div>
+            <div>
+              <h1 className="font-bold text-lg text-white">Presentation</h1>
+              <p className="text-xs text-slate-400">SkyWise Case Study</p>
+            </div>
           </div>
-          <div>
-            <h1 className="font-bold text-lg">SkyWise Case Study</h1>
-            <p className="text-xs text-slate-400">Efsora Labs Presentation</p>
-          </div>
-        </div>
 
-        <div className="flex items-center gap-4">
-          <div className="hidden md:flex items-center gap-2 text-sm text-slate-400">
-            <span>{currentSlide + 1}</span>
-            <span>/</span>
-            <span>{SLIDES.length}</span>
-          </div>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => setIsPlaying(!isPlaying)}
-            className="text-white hover:bg-white/10"
-          >
-            {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
-            <span className="ml-2">{isPlaying ? 'Pause' : 'Auto Play'}</span>
-          </Button>
-          <Link href="/chat">
-            <Button size="sm" className="bg-sky-500 hover:bg-sky-600 text-white">
-              Try Demo
-              <ArrowRight className="w-4 h-4 ml-2" />
+          <div className="flex items-center gap-1 sm:gap-3">
+            <Link href="/">
+              <Button variant="ghost" size="sm" className="text-slate-300 hover:bg-white/10 hover:text-white px-2 sm:px-3">
+                <Home className="w-4 h-4 sm:mr-2" />
+                <span className="hidden sm:inline">Home</span>
+              </Button>
+            </Link>
+            <Link href="/docs">
+              <Button variant="ghost" size="sm" className="text-slate-300 hover:bg-white/10 hover:text-white px-2 sm:px-3">
+                <FileText className="w-4 h-4 sm:mr-2" />
+                <span className="hidden sm:inline">Docs</span>
+              </Button>
+            </Link>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setIsPlaying(!isPlaying)}
+              className="hidden sm:flex text-slate-300 hover:bg-white/10 hover:text-white px-2 sm:px-3"
+            >
+              {isPlaying ? <Pause className="w-4 h-4 sm:mr-2" /> : <Play className="w-4 h-4 sm:mr-2" />}
+              <span className="hidden sm:inline">{isPlaying ? 'Pause' : 'Play'}</span>
             </Button>
-          </Link>
+            <Link href="/chat">
+              <Button size="sm" className="bg-sky-500 hover:bg-sky-600 text-white px-2 sm:px-3">
+                <span className="hidden sm:inline">Try Demo</span>
+                <span className="sm:hidden">Demo</span>
+                <ArrowRight className="w-4 h-4 ml-1 sm:ml-2" />
+              </Button>
+            </Link>
+          </div>
         </div>
       </header>
 
@@ -188,7 +203,7 @@ export default function PresentationPage() {
       </div>
 
       {/* Main Content */}
-      <main className="pt-20 min-h-screen flex items-center justify-center px-6">
+      <main className="min-h-[calc(100vh-170px)] flex items-center justify-center px-6 pt-24 pb-16 overflow-x-hidden touch-pan-y">
         <AnimatePresence mode="wait">
           <motion.div
             key={currentSlide}
@@ -196,7 +211,17 @@ export default function PresentationPage() {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -50 }}
             transition={{ duration: 0.3 }}
-            className="w-full max-w-6xl"
+            drag="x"
+            dragConstraints={{ left: 0, right: 0 }}
+            dragElastic={0.2}
+            onDragEnd={(_, info) => {
+              if (info.offset.x < -50 && currentSlide < SLIDES.length - 1) {
+                goNext();
+              } else if (info.offset.x > 50 && currentSlide > 0) {
+                goPrev();
+              }
+            }}
+            className="w-full max-w-6xl cursor-grab active:cursor-grabbing"
           >
             {renderSlide(SLIDES[currentSlide])}
           </motion.div>
@@ -204,50 +229,52 @@ export default function PresentationPage() {
       </main>
 
       {/* Navigation */}
-      <div className="fixed bottom-0 left-0 right-0 z-50 px-6 py-4 flex items-center justify-between bg-slate-900/80 backdrop-blur-lg border-t border-white/10">
-        {/* Slide Dots */}
-        <div className="hidden md:flex items-center gap-2">
-          {SLIDES.map((slide, index) => (
-            <button
-              key={slide.id}
-              onClick={() => goToSlide(index)}
-              className={`w-2 h-2 rounded-full transition-all duration-200 ${
-                index === currentSlide
-                  ? 'w-8 bg-sky-500'
-                  : index < currentSlide
-                  ? 'bg-sky-500/50'
-                  : 'bg-slate-600 hover:bg-slate-500'
-              }`}
-              title={slide.title}
-            />
-          ))}
-        </div>
+      <div className="fixed bottom-0 left-0 right-0 z-50 px-6 py-4 bg-slate-900/80 backdrop-blur-lg border-t border-white/10">
+        <div className="relative flex items-center justify-center">
+          {/* Slide Dots - Left */}
+          <div className="hidden md:flex items-center gap-2 absolute left-0">
+            {SLIDES.map((slide, index) => (
+              <button
+                key={slide.id}
+                onClick={() => goToSlide(index)}
+                className={`w-2 h-2 rounded-full transition-all duration-200 ${
+                  index === currentSlide
+                    ? 'w-8 bg-sky-500'
+                    : index < currentSlide
+                    ? 'bg-sky-500/50'
+                    : 'bg-slate-600 hover:bg-slate-500'
+                }`}
+                title={slide.title}
+              />
+            ))}
+          </div>
 
-        {/* Arrow Navigation */}
-        <div className="flex items-center gap-2 mx-auto md:mx-0">
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={goPrev}
-            disabled={currentSlide === 0}
-            className="text-white hover:bg-white/10 disabled:opacity-30"
-          >
-            <ChevronLeft className="w-6 h-6" />
-          </Button>
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={goNext}
-            disabled={currentSlide === SLIDES.length - 1}
-            className="text-white hover:bg-white/10 disabled:opacity-30"
-          >
-            <ChevronRight className="w-6 h-6" />
-          </Button>
-        </div>
+          {/* Arrow Navigation - Center */}
+          <div className="flex items-center gap-2">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={goPrev}
+              disabled={currentSlide === 0}
+              className="text-white hover:bg-white/10 hover:text-white disabled:opacity-30"
+            >
+              <ChevronLeft className="w-6 h-6" />
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={goNext}
+              disabled={currentSlide === SLIDES.length - 1}
+              className="text-white hover:bg-white/10 hover:text-white disabled:opacity-30"
+            >
+              <ChevronRight className="w-6 h-6" />
+            </Button>
+          </div>
 
-        {/* Current Slide Title */}
-        <div className="hidden md:block text-sm text-slate-400">
-          {SLIDES[currentSlide].title}
+          {/* Current Slide Title - Right */}
+          <div className="hidden md:block text-sm text-slate-400 absolute right-0">
+            {SLIDES[currentSlide].title}
+          </div>
         </div>
       </div>
     </div>
@@ -327,21 +354,24 @@ function HeroSlide() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.5 }}
-        className="flex items-center justify-center gap-4 text-sm text-slate-500"
+        className="flex items-center justify-center gap-3 sm:gap-4 text-xs sm:text-sm text-slate-500"
       >
-        <span className="flex items-center gap-2">
-          <Calendar className="w-4 h-4" />
-          Calendar Integration
+        <span className="flex items-center gap-1 sm:gap-2">
+          <Calendar className="w-3 h-3 sm:w-4 sm:h-4" />
+          <span className="hidden sm:inline">Calendar Integration</span>
+          <span className="sm:hidden">Calendar</span>
         </span>
         <span className="text-slate-700">|</span>
-        <span className="flex items-center gap-2">
-          <Mail className="w-4 h-4" />
-          Email Import
+        <span className="flex items-center gap-1 sm:gap-2">
+          <Mail className="w-3 h-3 sm:w-4 sm:h-4" />
+          <span className="hidden sm:inline">Email Import</span>
+          <span className="sm:hidden">Email</span>
         </span>
         <span className="text-slate-700">|</span>
-        <span className="flex items-center gap-2">
-          <MessageSquare className="w-4 h-4" />
-          Conversational UI
+        <span className="flex items-center gap-1 sm:gap-2">
+          <MessageSquare className="w-3 h-3 sm:w-4 sm:h-4" />
+          <span className="hidden sm:inline">Conversational UI</span>
+          <span className="sm:hidden">Chat</span>
         </span>
       </motion.div>
 
@@ -349,7 +379,7 @@ function HeroSlide() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.6 }}
-        className="mt-12 text-slate-600"
+        className="mt-12 text-slate-400"
       >
         <p>UX Design Case Study</p>
         <p className="text-sky-500 font-medium mt-1">Efsora Labs</p>
@@ -368,10 +398,10 @@ function ProblemSlide() {
 
   return (
     <div className="py-12">
-      <h2 className="text-4xl md:text-5xl font-bold text-center mb-4">The Problem</h2>
-      <p className="text-xl text-slate-400 text-center mb-12">Travel booking is fragmented and frustrating</p>
+      <h2 className="text-3xl md:text-4xl font-bold text-center mb-2">The Problem</h2>
+      <p className="text-lg text-slate-400 text-center mb-6">Travel booking is fragmented and frustrating</p>
 
-      <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+      <div className="grid md:grid-cols-2 gap-4 max-w-4xl mx-auto">
         {problems.map((problem, index) => (
           <motion.div
             key={problem.title}
@@ -379,14 +409,14 @@ function ProblemSlide() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.1 }}
           >
-            <Card className="p-6 bg-white/5 border-white/10 hover:bg-white/10 transition-colors">
-              <div className="flex items-start gap-4">
-                <div className="w-12 h-12 rounded-xl bg-red-500/20 flex items-center justify-center flex-shrink-0">
-                  <problem.icon className="w-6 h-6 text-red-400" />
+            <Card className="p-4 bg-slate-900/90 border-slate-700 hover:border-sky-500/50 transition-colors">
+              <div className="flex items-start gap-3">
+                <div className="w-10 h-10 rounded-xl bg-red-500/20 flex items-center justify-center flex-shrink-0">
+                  <problem.icon className="w-5 h-5 text-red-400" />
                 </div>
                 <div>
-                  <h3 className="text-3xl font-bold text-white">{problem.title}</h3>
-                  <p className="text-slate-400 mt-1">{problem.desc}</p>
+                  <h3 className="text-2xl font-bold text-white">{problem.title}</h3>
+                  <p className="text-slate-400 text-sm">{problem.desc}</p>
                 </div>
               </div>
             </Card>
@@ -398,15 +428,15 @@ function ProblemSlide() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.5 }}
-        className="mt-12 text-center"
+        className="mt-6 text-center"
       >
-        <Card className="inline-block p-6 bg-slate-800/50 border-slate-700">
-          <Quote className="w-8 h-8 text-sky-500 mx-auto mb-4" />
-          <p className="text-lg text-slate-300 italic max-w-2xl">
+        <Card className="inline-block p-4 bg-slate-900/90 border-slate-700">
+          <Quote className="w-6 h-6 text-sky-500 mx-auto mb-2" />
+          <p className="text-base text-slate-300 italic max-w-2xl">
             "I booked a flight to Chicago, only to realize I had an all-day offsite.
             Had to pay $400 to change the flight."
           </p>
-          <p className="text-sm text-slate-500 mt-4">— User Interview #7, VP of Sales</p>
+          <p className="text-sm text-slate-500 mt-2">— User Interview #7, VP of Sales</p>
         </Card>
       </motion.div>
     </div>
@@ -416,30 +446,31 @@ function ProblemSlide() {
 function UsersSlide() {
   return (
     <div className="py-12">
-      <h2 className="text-4xl md:text-5xl font-bold text-center mb-4">Our Users</h2>
-      <p className="text-xl text-slate-400 text-center mb-12">Designed for busy travelers who value their time</p>
+      <h2 className="text-3xl md:text-4xl font-bold text-center mb-2">Our Users</h2>
+      <p className="text-lg text-slate-400 text-center mb-6">Designed for busy travelers who value their time</p>
 
-      <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+      <div className="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
         {/* Persona 1 */}
         <motion.div
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.2 }}
+          className="h-full"
         >
-          <Card className="p-6 bg-gradient-to-br from-sky-500/10 to-transparent border-sky-500/30">
-            <div className="flex items-center gap-4 mb-4">
-              <div className="w-16 h-16 rounded-full bg-sky-500/20 flex items-center justify-center text-3xl">
+          <Card className="p-5 bg-slate-900/90 border-sky-500/50 h-full">
+            <div className="flex items-center gap-4 mb-3">
+              <div className="w-14 h-14 rounded-full bg-sky-500/30 flex items-center justify-center text-2xl">
                 👨‍💼
               </div>
               <div>
-                <h3 className="text-xl font-bold">Marcus Chen</h3>
-                <p className="text-slate-400">VP of Sales, 42</p>
+                <h3 className="text-lg font-bold text-white">Marcus Chen</h3>
+                <p className="text-slate-400 text-sm">VP of Sales, 42</p>
               </div>
             </div>
-            <p className="text-slate-300 mb-4 italic">
+            <p className="text-slate-300 mb-3 italic text-sm">
               "Time is money. Every minute I spend booking flights is a minute I'm not closing deals."
             </p>
-            <div className="space-y-2 text-sm">
+            <div className="space-y-1.5 text-sm">
               <div className="flex justify-between">
                 <span className="text-slate-400">Flights/month</span>
                 <span className="text-white font-medium">4-6</span>
@@ -461,21 +492,22 @@ function UsersSlide() {
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.3 }}
+          className="h-full"
         >
-          <Card className="p-6 bg-gradient-to-br from-purple-500/10 to-transparent border-purple-500/30">
-            <div className="flex items-center gap-4 mb-4">
-              <div className="w-16 h-16 rounded-full bg-purple-500/20 flex items-center justify-center text-3xl">
+          <Card className="p-5 bg-slate-900/90 border-purple-500/50 h-full">
+            <div className="flex items-center gap-4 mb-3">
+              <div className="w-14 h-14 rounded-full bg-purple-500/30 flex items-center justify-center text-2xl">
                 👩‍💻
               </div>
               <div>
-                <h3 className="text-xl font-bold">Emma Rodriguez</h3>
-                <p className="text-slate-400">UX Designer, 29</p>
+                <h3 className="text-lg font-bold text-white">Emma Rodriguez</h3>
+                <p className="text-slate-400 text-sm">UX Designer, 29</p>
               </div>
             </div>
-            <p className="text-slate-300 mb-4 italic">
+            <p className="text-slate-300 mb-3 italic text-sm">
               "I love planning trips, but I hate when things don't sync properly across all my apps."
             </p>
-            <div className="space-y-2 text-sm">
+            <div className="space-y-1.5 text-sm">
               <div className="flex justify-between">
                 <span className="text-slate-400">Trips/year</span>
                 <span className="text-white font-medium">6-8</span>
@@ -499,8 +531,8 @@ function UsersSlide() {
 function SolutionSlide() {
   return (
     <div className="py-12">
-      <h2 className="text-4xl md:text-5xl font-bold text-center mb-4">The Solution</h2>
-      <p className="text-xl text-slate-400 text-center mb-12">A calendar-first AI travel assistant you can trust</p>
+      <h2 className="text-3xl md:text-4xl font-bold text-center mb-2">The Solution</h2>
+      <p className="text-lg text-slate-400 text-center mb-6">A calendar-first AI travel assistant you can trust</p>
 
       <div className="max-w-4xl mx-auto">
         <motion.div
@@ -509,27 +541,27 @@ function SolutionSlide() {
           transition={{ delay: 0.2 }}
           className="relative"
         >
-          <Card className="p-8 bg-gradient-to-br from-sky-500/10 via-transparent to-purple-500/10 border-white/10">
-            <div className="grid md:grid-cols-3 gap-8 text-center">
+          <Card className="p-6 bg-slate-900/90 border-white/20">
+            <div className="grid md:grid-cols-3 gap-6 text-center">
               <div>
-                <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-sky-500/20 flex items-center justify-center">
-                  <MessageSquare className="w-8 h-8 text-sky-400" />
+                <div className="w-14 h-14 mx-auto mb-3 rounded-2xl bg-sky-500/30 flex items-center justify-center">
+                  <MessageSquare className="w-7 h-7 text-sky-400" />
                 </div>
-                <h3 className="font-bold text-lg mb-2">Natural Language</h3>
+                <h3 className="font-bold text-base text-white mb-1">Natural Language</h3>
                 <p className="text-slate-400 text-sm">"Book me a flight to SF tomorrow"</p>
               </div>
               <div>
-                <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-emerald-500/20 flex items-center justify-center">
-                  <Calendar className="w-8 h-8 text-emerald-400" />
+                <div className="w-14 h-14 mx-auto mb-3 rounded-2xl bg-emerald-500/30 flex items-center justify-center">
+                  <Calendar className="w-7 h-7 text-emerald-400" />
                 </div>
-                <h3 className="font-bold text-lg mb-2">Calendar-First</h3>
+                <h3 className="font-bold text-base text-white mb-1">Calendar-First</h3>
                 <p className="text-slate-400 text-sm">Conflicts detected before you search</p>
               </div>
               <div>
-                <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-amber-500/20 flex items-center justify-center">
-                  <Mail className="w-8 h-8 text-amber-400" />
+                <div className="w-14 h-14 mx-auto mb-3 rounded-2xl bg-amber-500/30 flex items-center justify-center">
+                  <Mail className="w-7 h-7 text-amber-400" />
                 </div>
-                <h3 className="font-bold text-lg mb-2">Email Import</h3>
+                <h3 className="font-bold text-base text-white mb-1">Email Import</h3>
                 <p className="text-slate-400 text-sm">Auto-extract with confidence scores</p>
               </div>
             </div>
@@ -540,13 +572,13 @@ function SolutionSlide() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
-          className="mt-8 text-center"
+          className="mt-6 text-center"
         >
-          <p className="text-2xl font-light text-slate-300">
+          <p className="text-xl font-light text-slate-300">
             <span className="text-sky-400 font-medium">18 minutes</span> →
             <span className="text-emerald-400 font-medium"> 2 minutes</span>
           </p>
-          <p className="text-slate-500 mt-2">Average booking time</p>
+          <p className="text-slate-500 mt-1">Average booking time</p>
         </motion.div>
       </div>
     </div>
@@ -556,12 +588,7 @@ function SolutionSlide() {
 function FeatureChatSlide() {
   return (
     <div className="py-12">
-      <div className="flex items-center justify-center gap-3 mb-4">
-        <div className="w-12 h-12 rounded-xl bg-sky-500/20 flex items-center justify-center">
-          <MessageSquare className="w-6 h-6 text-sky-400" />
-        </div>
-        <h2 className="text-4xl md:text-5xl font-bold">Conversational Booking</h2>
-      </div>
+      <h2 className="text-4xl md:text-5xl font-bold text-center mb-4">Conversational Booking</h2>
       <p className="text-xl text-slate-400 text-center mb-12">Type naturally, book instantly</p>
 
       <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto items-center">
@@ -570,17 +597,17 @@ function FeatureChatSlide() {
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.2 }}
         >
-          <Card className="p-6 bg-slate-800/50 border-slate-700">
+          <Card className="p-6 bg-slate-900/90 border-slate-700">
             <div className="space-y-4">
               <div className="flex items-start gap-3">
-                <div className="w-8 h-8 rounded-full bg-sky-500 flex items-center justify-center text-xs font-bold">U</div>
+                <div className="w-8 h-8 min-w-[32px] min-h-[32px] rounded-full bg-slate-600 flex items-center justify-center text-xs font-bold flex-shrink-0">U</div>
                 <div className="bg-sky-500/20 rounded-2xl rounded-tl-sm px-4 py-2 text-sm">
                   I need to fly to San Francisco next Tuesday
                 </div>
               </div>
               <div className="flex items-start gap-3">
-                <div className="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center">
-                  <Sparkles className="w-4 h-4 text-sky-400" />
+                <div className="w-8 h-8 min-w-[32px] min-h-[32px] rounded-full bg-sky-500 flex items-center justify-center flex-shrink-0">
+                  <Plane className="w-4 h-4 text-white" />
                 </div>
                 <div className="bg-slate-700/50 rounded-2xl rounded-tl-sm px-4 py-2 text-sm">
                   <p>I'll search for flights to San Francisco. Let me check your calendar for next Tuesday...</p>
@@ -629,12 +656,7 @@ function FeatureChatSlide() {
 function FeatureCalendarSlide() {
   return (
     <div className="py-12">
-      <div className="flex items-center justify-center gap-3 mb-4">
-        <div className="w-12 h-12 rounded-xl bg-emerald-500/20 flex items-center justify-center">
-          <Calendar className="w-6 h-6 text-emerald-400" />
-        </div>
-        <h2 className="text-4xl md:text-5xl font-bold">Calendar Integration</h2>
-      </div>
+      <h2 className="text-4xl md:text-5xl font-bold text-center mb-4">Calendar Integration</h2>
       <p className="text-xl text-slate-400 text-center mb-12">Know conflicts before you search, not after</p>
 
       <div className="max-w-4xl mx-auto">
@@ -711,12 +733,7 @@ function FeatureCalendarSlide() {
 function FeatureEmailSlide() {
   return (
     <div className="py-12">
-      <div className="flex items-center justify-center gap-3 mb-4">
-        <div className="w-12 h-12 rounded-xl bg-amber-500/20 flex items-center justify-center">
-          <Mail className="w-6 h-6 text-amber-400" />
-        </div>
-        <h2 className="text-4xl md:text-5xl font-bold">Email Import</h2>
-      </div>
+      <h2 className="text-4xl md:text-5xl font-bold text-center mb-4">Email Import</h2>
       <p className="text-xl text-slate-400 text-center mb-12">Auto-extract flight details with confidence scores</p>
 
       <div className="max-w-4xl mx-auto">
@@ -725,7 +742,7 @@ function FeatureEmailSlide() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
         >
-          <Card className="p-6 bg-slate-800/50 border-slate-700">
+          <Card className="p-6 bg-slate-900/90 border-slate-700">
             <div className="flex items-center gap-3 mb-6 pb-4 border-b border-slate-700">
               <Mail className="w-5 h-5 text-slate-400" />
               <div>
@@ -735,7 +752,7 @@ function FeatureEmailSlide() {
             </div>
 
             <div className="space-y-4">
-              <div className="flex items-center justify-between p-3 bg-slate-700/30 rounded-lg">
+              <div className="flex items-center justify-between p-3 bg-slate-800/50 rounded-lg">
                 <div>
                   <p className="text-sm text-slate-400">Flight Number</p>
                   <p className="font-medium">UA442</p>
@@ -745,7 +762,7 @@ function FeatureEmailSlide() {
                   98%
                 </div>
               </div>
-              <div className="flex items-center justify-between p-3 bg-slate-700/30 rounded-lg">
+              <div className="flex items-center justify-between p-3 bg-slate-800/50 rounded-lg">
                 <div>
                   <p className="text-sm text-slate-400">Route</p>
                   <p className="font-medium">JFK → SFO</p>
@@ -785,12 +802,7 @@ function FeatureEmailSlide() {
 function FeatureTrustSlide() {
   return (
     <div className="py-12">
-      <div className="flex items-center justify-center gap-3 mb-4">
-        <div className="w-12 h-12 rounded-xl bg-purple-500/20 flex items-center justify-center">
-          <Shield className="w-6 h-6 text-purple-400" />
-        </div>
-        <h2 className="text-4xl md:text-5xl font-bold">Trust-First Design</h2>
-      </div>
+      <h2 className="text-4xl md:text-5xl font-bold text-center mb-4">Trust-First Design</h2>
       <p className="text-xl text-slate-400 text-center mb-12">Undo anything. Confirm everything. Stay in control.</p>
 
       <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
@@ -799,7 +811,7 @@ function FeatureTrustSlide() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
         >
-          <Card className="p-6 bg-slate-800/50 border-slate-700 h-full">
+          <Card className="p-6 bg-slate-900/90 border-slate-700 h-full">
             <div className="w-12 h-12 rounded-xl bg-emerald-500/20 flex items-center justify-center mb-4">
               <Undo2 className="w-6 h-6 text-emerald-400" />
             </div>
@@ -815,7 +827,7 @@ function FeatureTrustSlide() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
         >
-          <Card className="p-6 bg-slate-800/50 border-slate-700 h-full">
+          <Card className="p-6 bg-slate-900/90 border-slate-700 h-full">
             <div className="w-12 h-12 rounded-xl bg-sky-500/20 flex items-center justify-center mb-4">
               <CheckCircle2 className="w-6 h-6 text-sky-400" />
             </div>
@@ -831,7 +843,7 @@ function FeatureTrustSlide() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
         >
-          <Card className="p-6 bg-slate-800/50 border-slate-700 h-full">
+          <Card className="p-6 bg-slate-900/90 border-slate-700 h-full">
             <div className="w-12 h-12 rounded-xl bg-amber-500/20 flex items-center justify-center mb-4">
               <Eye className="w-6 h-6 text-amber-400" />
             </div>
@@ -866,14 +878,15 @@ function PrinciplesSlide() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.1 }}
+            className="h-full"
           >
-            <Card className="p-6 bg-slate-800/50 border-slate-700 hover:border-sky-500/50 transition-colors">
+            <Card className="p-6 bg-slate-900/90 border-slate-700 hover:border-sky-500/50 transition-colors h-full">
               <div className="flex items-start gap-4">
                 <div className="w-12 h-12 rounded-xl bg-sky-500/20 flex items-center justify-center flex-shrink-0">
                   <principle.icon className="w-6 h-6 text-sky-400" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-lg">{principle.title}</h3>
+                  <h3 className="font-bold text-lg text-white">{principle.title}</h3>
                   <p className="text-slate-400 mt-1">{principle.desc}</p>
                 </div>
               </div>
@@ -897,7 +910,7 @@ function DemoSlide() {
         transition={{ delay: 0.2 }}
         className="max-w-2xl mx-auto"
       >
-        <Card className="p-8 bg-gradient-to-br from-sky-500/10 to-purple-500/10 border-white/10">
+        <Card className="p-8 bg-slate-900/90 border-slate-700">
           <div className="w-20 h-20 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-sky-400 to-sky-600 flex items-center justify-center">
             <Play className="w-10 h-10 text-white ml-1" />
           </div>
@@ -963,7 +976,7 @@ function MetricsSlide() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
             >
-              <Card className="p-6 bg-slate-800/50 border-slate-700">
+              <Card className="p-6 bg-slate-900/90 border-slate-700 h-full">
                 <h3 className="font-medium text-slate-400 mb-4">{metric.label}</h3>
                 <div className="flex items-end justify-between">
                   <div>
@@ -1013,7 +1026,7 @@ function SummarySlide() {
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.3 + index * 0.1 }}
-              className="flex items-center gap-4 p-4 rounded-xl bg-slate-800/50"
+              className="flex items-center gap-4 p-4 rounded-xl bg-slate-900/90"
             >
               <div className="w-10 h-10 rounded-lg bg-sky-500/20 flex items-center justify-center flex-shrink-0">
                 <item.icon className="w-5 h-5 text-sky-400" />
@@ -1035,7 +1048,7 @@ function SummarySlide() {
               <ArrowRight className="w-5 h-5 ml-2" />
             </Button>
           </Link>
-          <Link href="https://github.com" target="_blank">
+          <Link href="https://github.com/CXBilen/skywise" target="_blank">
             <Button size="lg" variant="outline" className="border-slate-600 text-slate-300 hover:bg-slate-800 w-full sm:w-auto">
               <Github className="w-5 h-5 mr-2" />
               View Source
@@ -1043,17 +1056,6 @@ function SummarySlide() {
           </Link>
         </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.8 }}
-          className="mt-12 pt-8 border-t border-slate-800"
-        >
-          <p className="text-slate-500">Thank you for your attention!</p>
-          <p className="text-2xl font-bold mt-2 bg-gradient-to-r from-sky-400 to-purple-400 bg-clip-text text-transparent">
-            Questions?
-          </p>
-        </motion.div>
       </div>
     </div>
   );

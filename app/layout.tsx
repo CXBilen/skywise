@@ -16,6 +16,10 @@ export const metadata: Metadata = {
     "email integration",
   ],
   authors: [{ name: "SkyWise" }],
+  icons: {
+    icon: "/icon.svg",
+    apple: "/apple-icon.svg",
+  },
   openGraph: {
     title: "SkyWise - AI Travel Assistant",
     description: "Fly smarter, not harder.",

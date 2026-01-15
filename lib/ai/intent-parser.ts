@@ -76,22 +76,28 @@ const CANCEL_PATTERNS = [
 ];
 
 const QUERY_PATTERNS = [
-  /(?:what|where|how|when)(?:'s| is| are)? (?:my |the )?(?:status|trip|flight|booking)/i,
-  /(?:show|tell|give) (?:me )?(?:my |the )?(?:status|details|info)/i,
-  /(?:track|check) (?:my )?(?:flight|trip|booking)/i,
+  /\b(?:what|where|how|when)(?:'s| is| are)? (?:my |the )?(?:status|trip|flight|booking)\b/i,
+  /\b(?:show|tell|give) (?:me )?(?:my |the )?(?:status|details|info)\b/i,
+  /\b(?:track|check) (?:my )?(?:flight|trip|booking)\b/i,
 ];
 
 const SHOW_TRIPS_PATTERNS = [
-  /(?:show|list|see|view|display) (?:my |all )?(?:trips?|bookings?|flights?|reservations?)/i,
-  /(?:my |upcoming |past )?(?:trips?|bookings?|reservations?)/i,
-  /(?:what|which) (?:trips?|flights?) do i have/i,
+  /^show my trips?$/i,
+  /^show trips?$/i,
+  /^my trips?$/i,
+  /show\s+(?:my\s+)?trips?/i,
+  /(?:show|list|see|view|display)\s+(?:my\s+|all\s+)?(?:upcoming\s+|past\s+)?(?:trips?|bookings?|flights?|reservations?)/i,
+  /(?:my|upcoming|past)\s+(?:trips?|bookings?|reservations?)/i,
+  /(?:what|which)\s+(?:trips?|flights?)\s+do\s+i\s+have/i,
 ];
 
 const IMPORT_EMAIL_PATTERNS = [
-  /(?:import|scan|check|read|find) (?:my )?(?:email|emails|inbox|confirmations?)/i,
-  /(?:get|pull|extract) (?:flights? )?from (?:my )?email/i,
-  /(?:email|gmail|outlook) (?:import|scan)/i,
-  /(?:confirmation|booking) (?:email|emails)/i,
+  /(?:import|scan|check|read|find) (?:my )?(?:email|emails|mail|inbox|confirmations?)/i,
+  /(?:get|pull|extract) (?:flights? )?from (?:my )?(?:email|mail)/i,
+  /(?:email|mail|gmail|outlook) (?:import|scan)/i,
+  /(?:confirmation|booking) (?:email|emails|mail)/i,
+  /(?:automatically|auto) (?:import|scan|check)/i,
+  /import (?:flights? )?from (?:my )?(?:email|mail)/i,
 ];
 
 const CALENDAR_PATTERNS = [

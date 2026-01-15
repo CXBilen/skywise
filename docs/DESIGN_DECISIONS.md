@@ -569,6 +569,26 @@ Undo toast shows what will be undone, not just "Undo" button.
 
 ---
 
-*Document Version: 1.1 (v0.0.3)*
-*Last Updated: January 2025*
+## 12. Figma Deliverables
+
+### Decision: HTML-Based Figma Export
+
+**What We Chose:**
+Self-contained HTML files for Figma import instead of traditional design files.
+
+**Rationale:**
+- Preserves exact design tokens and spacing
+- Enables rapid iteration with code-first approach
+- Seamless import via html.to.design MCP server
+- Version controlled with codebase
+
+**Deliverables (v0.0.4):**
+- 36 screens (18 mobile + 18 desktop)
+- 7 user flow diagrams (3 mobile + 4 desktop)
+- Total: 43 HTML files in `/figma` directory
+
+---
+
+*Document Version: 1.4 (v0.0.4)*
+*Last Updated: January 2026*
 *Author: Design Team*

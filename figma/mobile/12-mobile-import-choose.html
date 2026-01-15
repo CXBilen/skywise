@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=375, height=812">
+  <title>SkyWise - Import Choose Method</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      width: 375px;
+      height: 812px;
+      background: #f8fafc;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    header {
+      display: flex;
+      align-items: center;
+      padding: 16px 20px;
+      background: white;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    .back-btn {
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 12px;
+    }
+    .back-btn svg {
+      width: 20px;
+      height: 20px;
+      color: #64748b;
+    }
+    .header-title {
+      font-size: 17px;
+      font-weight: 600;
+      color: #0f172a;
+    }
+    main {
+      flex: 1;
+      padding: 24px 20px;
+      overflow-y: auto;
+    }
+    .page-header {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+    .page-icon {
+      width: 64px;
+      height: 64px;
+      background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 16px;
+    }
+    .page-icon svg {
+      width: 32px;
+      height: 32px;
+      color: white;
+    }
+    h1 {
+      font-size: 22px;
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 8px;
+    }
+    .subtitle {
+      font-size: 14px;
+      color: #64748b;
+    }
+    .methods {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+    .method-card {
+      background: white;
+      border: 2px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 20px;
+      text-align: center;
+    }
+    .method-card.selected {
+      border-color: #0ea5e9;
+      background: #f0f9ff;
+    }
+    .method-icon {
+      width: 56px;
+      height: 56px;
+      background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 14px;
+    }
+    .method-icon svg {
+      width: 28px;
+      height: 28px;
+      color: #0ea5e9;
+    }
+    .method-card h3 {
+      font-size: 16px;
+      font-weight: 600;
+      color: #0f172a;
+      margin-bottom: 8px;
+    }
+    .method-card p {
+      font-size: 13px;
+      color: #64748b;
+      line-height: 1.5;
+      margin-bottom: 12px;
+    }
+    .method-tags {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+    }
+    .tag {
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 500;
+    }
+    .tag.recommended {
+      background: #d1fae5;
+      color: #059669;
+    }
+    .tag.default {
+      background: #f1f5f9;
+      color: #64748b;
+    }
+    .features-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+    .feature {
+      background: white;
+      border-radius: 12px;
+      border: 1px solid #e2e8f0;
+      padding: 16px 12px;
+      text-align: center;
+    }
+    .feature-icon {
+      width: 40px;
+      height: 40px;
+      background: #f0f9ff;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 8px;
+    }
+    .feature-icon svg {
+      width: 20px;
+      height: 20px;
+      color: #0ea5e9;
+    }
+    .feature h4 {
+      font-size: 12px;
+      font-weight: 600;
+      color: #0f172a;
+      margin-bottom: 2px;
+    }
+    .feature p {
+      font-size: 11px;
+      color: #64748b;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <button class="back-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="15 18 9 12 15 6"/>
+      </svg>
+    </button>
+    <span class="header-title">Import Flights</span>
+  </header>
+
+  <main>
+    <div class="page-header">
+      <div class="page-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+          <polyline points="22,6 12,13 2,6"/>
+        </svg>
+      </div>
+      <h1>Import Flights</h1>
+      <p class="subtitle">Choose how to import</p>
+    </div>
+
+    <div class="methods">
+      <div class="method-card selected">
+        <div class="method-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"/>
+            <path d="m21 21-4.35-4.35"/>
+          </svg>
+        </div>
+        <h3>Automatic Discovery</h3>
+        <p>Scan your email for flight confirmations</p>
+        <div class="method-tags">
+          <span class="tag recommended">Recommended</span>
+        </div>
+      </div>
+
+      <div class="method-card">
+        <div class="method-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+          </svg>
+        </div>
+        <h3>Manual Entry</h3>
+        <p>Paste your confirmation email</p>
+        <div class="method-tags">
+          <span class="tag default">Copy & Paste</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="features-row">
+      <div class="feature">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+          </svg>
+        </div>
+        <h4>AI</h4>
+        <p>Smart</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          </svg>
+        </div>
+        <h4>Secure</h4>
+        <p>Private</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+            <line x1="16" y1="2" x2="16" y2="6"/>
+            <line x1="8" y1="2" x2="8" y2="6"/>
+          </svg>
+        </div>
+        <h4>Sync</h4>
+        <p>Calendar</p>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

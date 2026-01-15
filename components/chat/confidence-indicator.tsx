@@ -53,17 +53,17 @@ const CONTEXT_EXPLANATIONS: Record<string, Record<ConfidenceLevel, string>> = {
   destination: {
     high: "I'm confident about this destination.",
     medium: "I found a match, but there are similar options. Is this correct?",
-    low: "I'm not sure about this destination. Did you mean one of these?",
+    low: "I'm not sure about this destination. Please clarify where you'd like to go.",
   },
   date: {
     high: "Date confirmed.",
     medium: "I interpreted this as the date. Please verify.",
-    low: "I couldn't parse the date clearly. When exactly?",
+    low: "I couldn't parse the date clearly. Please specify the date.",
   },
   time: {
     high: "Time preference noted.",
     medium: "I understood this as your preferred time range.",
-    low: "The time wasn't clear to me. Morning, afternoon, or evening?",
+    low: "The time wasn't clear to me. Please specify morning, afternoon, or evening.",
   },
   email_extraction: {
     high: "Extracted with high confidence from your email.",
@@ -78,7 +78,7 @@ const CONTEXT_EXPLANATIONS: Record<string, Record<ConfidenceLevel, string>> = {
   airport: {
     high: "Airport confirmed.",
     medium: "Multiple airports available. I selected the main one.",
-    low: "Several airports match. Which one did you mean?",
+    low: "Several airports match. Please specify which airport you prefer.",
   },
 };
 
@@ -114,20 +114,21 @@ export function ConfidenceIndicator({
       initial={{ opacity: 0, y: 5 }}
       animate={{ opacity: 1, y: 0 }}
       className={cn(
-        "flex items-start gap-2 p-2 rounded-lg border text-sm",
+        "flex items-start gap-2 p-2 rounded-lg border text-sm max-w-full overflow-hidden box-border",
         config.bgColor,
         config.borderColor
       )}
+      style={{ maxWidth: '100%', width: '100%' }}
     >
       <Icon className={cn("h-4 w-4 mt-0.5 flex-shrink-0", config.color)} />
-      <div className="flex-1 min-w-0">
+      <div className="flex-1 min-w-0 overflow-hidden">
         {value && (
-          <span className={cn("font-medium", config.color)}>{value}</span>
+          <span className={cn("font-medium break-words", config.color)}>{value}</span>
         )}
         {showExplanation && (
           <p
             className={cn(
-              "text-xs mt-0.5",
+              "text-xs mt-0.5 break-words",
               config.color.replace("600", "700")
             )}
           >

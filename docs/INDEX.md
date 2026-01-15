@@ -2,6 +2,8 @@
 
 ## Efsora Labs - UX Designer (AI-Native) Position
 
+**Version 0.0.4** | January 2026
+
 ---
 
 ## Overview
@@ -16,6 +18,10 @@ This case study demonstrates the design and development of **SkyWise**, an AI-po
 - **[Live Demo](/chat)** - Try the booking flow
 - **[Presentation Mode](/presentation)** - Full case study slideshow
 - **[Onboarding Flow](/onboarding)** - See the permission setup
+- **[Trips Dashboard](/trips)** - View and manage trips
+- **[Import Wizard](/import)** - Email import flow (auto + manual)
+- **[Settings](/settings)** - User preferences
+- **[Documentation](/docs)** - Browse documentation
 
 ### Documentation
 | Document | Description |
@@ -27,7 +33,6 @@ This case study demonstrates the design and development of **SkyWise**, an AI-po
 | [Design Decisions](./DESIGN_DECISIONS.md) | Rationale for key design choices |
 | [Case Study Mapping](./CASE_STUDY_MAPPING.md) | Requirements to implementation mapping |
 | [Architecture](./ARCHITECTURE.md) | Technical architecture and data flows |
-| [Interview Talking Points](./INTERVIEW_TALKING_POINTS.md) | Design rationale for portfolio presentation |
 
 ---
 
@@ -39,11 +44,15 @@ This case study demonstrates the design and development of **SkyWise**, an AI-po
 |-------------|--------|----------|
 | Problem framing & assumptions | ✅ Complete | [UX Research](./UX_RESEARCH.md) |
 | 2-3 key user flows | ✅ Complete | [User Flows](./USER_FLOWS.md) |
-| Wireframes / mid-fi screens | ✅ Complete | [Figma Package](../figma/) |
+| Wireframes / mid-fi screens | ✅ Complete | [Figma Package](../figma/) (43 HTML files) |
+| - Landing page | ✅ | Screen 00 |
 | - Onboarding & permissions | ✅ | Screens 01-03 |
-| - Booking via chat | ✅ | Screens 04-06, 09 |
+| - Booking via chat | ✅ | Screens 04-06, 09-10 |
 | - Conflict handling | ✅ | Screen 07 |
-| - Adding imported trips | ✅ | Screen 08 |
+| - Adding imported trips | ✅ | Screen 08, 12-15 (Import Wizard) |
+| - Trips dashboard | ✅ | Screen 11 |
+| - Settings & docs | ✅ | Screens 16-17 |
+| - User flow diagrams | ✅ | 7 flow diagrams (mobile + desktop) |
 | Example chatbot conversations | ✅ Complete | [Demo Scenarios](../lib/demo/scenario-runner.ts) |
 | Edge cases + trust/privacy | ✅ Complete | [Design Decisions](./DESIGN_DECISIONS.md) |
 
@@ -98,7 +107,14 @@ This case study demonstrates the design and development of **SkyWise**, an AI-po
 - **Confidence Microcopy**: AI shows uncertainty levels with natural language explanations
 - **Recovery Flows**: Graceful handling when AI misunderstands (e.g., "next Tuesday" ambiguity)
 - **Enhanced Undo UX**: Clear explanations of what undo will do
-- **Interview Documentation**: Comprehensive design rationale for portfolio presentation
+
+### 6. v0.0.4 Features
+- **Trips Dashboard**: View and manage all upcoming/completed trips with filtering
+- **Import Wizard**: Two-mode import flow (automatic email discovery + manual paste)
+- **Documentation Pages**: In-app documentation browser with dynamic routes
+- **Date Picker**: Calendar-based date selection component
+- **App Icons**: SVG icons for web and Apple devices
+- **43 Figma HTML Screens**: Complete screen set with 7 user flow diagrams
 
 ---
 
@@ -127,28 +143,52 @@ This case study demonstrates the design and development of **SkyWise**, an AI-po
 ```
 skywise/
 ├── app/                    # Next.js App Router
-│   ├── presentation/       # Case study presentation
+│   ├── api/               # API endpoints
+│   │   ├── calendar/      # Calendar conflict checking
+│   │   ├── conversations/ # Conversation history
+│   │   ├── email/         # Email import
+│   │   ├── flights/       # Flight search
+│   │   └── trips/         # Trip management
 │   ├── chat/              # Main chat interface
+│   ├── docs/              # Documentation pages
+│   ├── import/            # Import flow page
 │   ├── onboarding/        # Permission setup flow
-│   └── api/               # API endpoints
+│   ├── presentation/      # Case study presentation
+│   ├── settings/          # Settings page
+│   └── trips/             # Trips management page
 ├── components/            # React components
-│   ├── chat/              # Chat-specific
-│   ├── flights/           # Flight cards
+│   ├── chat/              # Chat-specific (13 components)
+│   ├── flights/           # Flight cards (6 components)
+│   ├── layout/            # Layout components
+│   ├── onboarding/        # Onboarding components
 │   ├── trust/             # Trust components
 │   └── ui/                # Base UI (shadcn)
+├── hooks/                 # Custom React hooks
+│   ├── use-chat-state.ts
+│   ├── use-responsive.ts
+│   ├── use-toast.ts
+│   └── use-tour.ts
 ├── docs/                  # Documentation
-│   ├── UX_RESEARCH.md
+│   ├── ARCHITECTURE.md
+│   ├── CASE_STUDY_MAPPING.md
+│   ├── COMPETITIVE_ANALYSIS.md
+│   ├── DESIGN_DECISIONS.md
+│   ├── INDEX.md
 │   ├── PERSONAS.md
 │   ├── USER_FLOWS.md
-│   ├── COMPETITIVE_ANALYSIS.md
-│   └── DESIGN_DECISIONS.md
+│   └── UX_RESEARCH.md
 ├── lib/                   # Core logic
 │   ├── ai/                # Intent parsing, NLP
+│   ├── actions/           # Undo manager
+│   ├── demo/              # Demo scenarios
 │   ├── email/             # Email parser
-│   └── actions/           # Undo manager
-└── figma/                 # Figma HTML screens (20 total)
-    ├── mobile/            # Mobile screens (01-10)
-    └── desktop/           # Desktop screens (01-10)
+│   ├── db/                # Database schema
+│   ├── design-tokens.ts   # Design system tokens
+│   └── tour-config.ts     # Tour configuration
+└── figma/                 # Figma HTML screens (43 total)
+    ├── mobile/            # Mobile screens (00-17) + userflows/
+    ├── desktop/           # Desktop screens (00-17) + userflows/
+    └── README.md          # Figma export documentation
 ```
 
 ---
@@ -177,4 +217,4 @@ This case study was created for the **UX Designer (AI-Native)** position at **Ef
 
 ---
 
-*Last Updated: January 2025 (v0.0.3)*
+*Last Updated: January 2026 (v0.0.4)*

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Undo2, Check, X, ChevronDown, ChevronUp, Calendar, Plane, Mail, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -68,6 +69,21 @@ export function UndoToast({
   const [isPaused, setIsPaused] = useState(false);
   const pausedProgressRef = useRef(100);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const isMountedRef = useRef(true);
+  const onDismissRef = useRef(onDismiss);
+
+  // Keep onDismiss ref updated
+  useEffect(() => {
+    onDismissRef.current = onDismiss;
+  }, [onDismiss]);
+
+  // Track mount state
+  useEffect(() => {
+    isMountedRef.current = true;
+    return () => {
+      isMountedRef.current = false;
+    };
+  }, []);
 
   // Progress timer
   useEffect(() => {
@@ -92,7 +108,15 @@ export function UndoToast({
             clearInterval(intervalRef.current);
             intervalRef.current = null;
           }
-          onDismiss();
+          // Only call onDismiss if component is still mounted
+          if (isMountedRef.current) {
+            // Use setTimeout to avoid state update during render
+            setTimeout(() => {
+              if (isMountedRef.current) {
+                onDismissRef.current();
+              }
+            }, 0);
+          }
           return 0;
         }
         return newProgress;
@@ -105,7 +129,7 @@ export function UndoToast({
         intervalRef.current = null;
       }
     };
-  }, [show, duration, onDismiss, isPaused]);
+  }, [show, duration, isPaused]);
 
   const handleMouseEnter = useCallback(() => {
     pausedProgressRef.current = progress;
@@ -135,7 +159,13 @@ export function UndoToast({
   const colors = ACTION_COLORS[actionType] || ACTION_COLORS.calendar_add;
   const remainingSeconds = Math.ceil((progress / 100) * (duration / 1000));
 
-  return (
+  // For SSR safety, only render portal on client
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const toastContent = (
     <AnimatePresence>
       {show && (
         <motion.div
@@ -143,36 +173,28 @@ export function UndoToast({
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: 50, scale: 0.9 }}
           transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-          className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 w-full max-w-md px-4"
+          className="fixed bottom-4 left-3 right-3 sm:left-auto sm:right-4 z-50 sm:w-full sm:max-w-md"
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
           role="alert"
           aria-live="polite"
         >
           <div className="bg-slate-900/95 backdrop-blur-xl text-white rounded-2xl shadow-2xl overflow-hidden">
-            <div className="p-4 flex items-center gap-3">
+            <div className="p-3 sm:p-4 flex items-start sm:items-center gap-2 sm:gap-3">
               {/* Icon */}
-              <div className={`w-10 h-10 rounded-xl ${colors.bg} flex items-center justify-center flex-shrink-0`}>
-                <Icon className={`h-5 w-5 ${colors.icon}`} />
+              <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl ${colors.bg} flex items-center justify-center flex-shrink-0`}>
+                <Icon className={`h-4 w-4 sm:h-5 sm:w-5 ${colors.icon}`} />
               </div>
 
               {/* Content */}
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium truncate">{message}</p>
+                <p className="text-xs sm:text-sm font-medium line-clamp-2 sm:truncate">{message}</p>
                 {description && (
                   <p className="text-xs text-slate-400 truncate">{description}</p>
                 )}
-                {/* What will happen on undo - contextual explanation */}
-                <p className="text-xs text-slate-500 mt-1">
-                  {actionType === 'calendar_add' && "Undo will remove the event from your calendar"}
-                  {actionType === 'booking_confirm' && "Undo will cancel the booking and remove calendar events"}
-                  {actionType === 'email_import' && "Undo will remove the imported trip"}
-                  {actionType === 'trip_delete' && "Undo will restore the deleted trip"}
-                  {actionType === 'preference_change' && "Undo will restore your previous preferences"}
-                </p>
-                <p className="text-xs text-slate-500 mt-0.5">
+                <p className="text-[10px] sm:text-xs text-slate-500 mt-0.5">
                   {isPaused ? (
-                    <span className="text-amber-400">⏸ Paused - hover to extend</span>
+                    <span className="text-amber-400">⏸ Paused</span>
                   ) : (
                     <span>{remainingSeconds}s to undo</span>
                   )}
@@ -180,25 +202,25 @@ export function UndoToast({
               </div>
 
               {/* Actions */}
-              <div className="flex items-center gap-2 flex-shrink-0">
+              <div className="flex items-center gap-1 sm:gap-2 flex-shrink-0">
                 <Button
                   variant="ghost"
                   size="sm"
                   onClick={handleUndo}
                   disabled={isUndoing}
-                  className="text-white hover:bg-white/10 touch-target"
+                  className="text-white hover:bg-white/10 h-8 px-2 sm:px-3 text-xs sm:text-sm"
                   aria-label="Undo action"
                 >
                   {isUndoing ? (
                     <motion.div
                       animate={{ rotate: 360 }}
                       transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
-                      className="h-4 w-4 border-2 border-white border-t-transparent rounded-full"
+                      className="h-3 w-3 sm:h-4 sm:w-4 border-2 border-white border-t-transparent rounded-full"
                     />
                   ) : (
                     <>
-                      <Undo2 className="h-4 w-4 mr-1" />
-                      Undo
+                      <Undo2 className="h-3 w-3 sm:h-4 sm:w-4 sm:mr-1" />
+                      <span className="hidden sm:inline">Undo</span>
                     </>
                   )}
                 </Button>
@@ -206,10 +228,10 @@ export function UndoToast({
                   variant="ghost"
                   size="icon"
                   onClick={onDismiss}
-                  className="h-8 w-8 text-slate-400 hover:text-white hover:bg-white/10"
+                  className="h-7 w-7 sm:h-8 sm:w-8 text-slate-400 hover:text-white hover:bg-white/10"
                   aria-label="Dismiss"
                 >
-                  <X className="h-4 w-4" />
+                  <X className="h-3 w-3 sm:h-4 sm:w-4" />
                 </Button>
               </div>
             </div>
@@ -228,6 +250,10 @@ export function UndoToast({
       )}
     </AnimatePresence>
   );
+
+  // Render via portal to escape any container constraints
+  if (!mounted) return null;
+  return createPortal(toastContent, document.body);
 }
 
 // ============================================
@@ -291,7 +317,7 @@ export function MultiUndoToast({
       animate={{ opacity: 1, y: 0, scale: 1 }}
       exit={{ opacity: 0, y: 50, scale: 0.9 }}
       transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-      className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 w-full max-w-md px-4"
+      className="fixed bottom-4 right-4 z-50 w-full max-w-md"
       role="alert"
       aria-live="polite"
     >

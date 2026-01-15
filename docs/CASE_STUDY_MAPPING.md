@@ -11,7 +11,9 @@ This document maps the SkyWise case study requirements to their implementations 
 | Calendar Integration | Conflict detection + event creation | `/app/api/calendar/route.ts` |
 | Email Import | Multi-airline parsing with confidence | `/lib/email/parser.ts` |
 | Undo Functionality | 15-second grace period | `/lib/actions/undo-manager.ts` |
-| Trust & Control | Explicit confirmations | `/components/trust/*` |
+| Trust & Control | Explicit confirmations | `/components/trust/permission-explainer.tsx` |
+| Trips Management | View and manage trips | `/app/trips/page.tsx` |
+| Tour System | Onboarding tour | `/lib/tour-config.ts`, `/hooks/use-tour.ts` |
 
 ## Detailed Mapping
 
@@ -48,7 +50,9 @@ This document maps the SkyWise case study requirements to their implementations 
 - `/lib/ai/intent-parser.ts` - Intent detection
 - `/lib/ai/conversation-context.ts` - State management
 - `/lib/ai/response-generator.ts` - Natural responses
+- `/lib/ai/misunderstanding-scenarios.ts` - Recovery scenarios
 - `/components/chat/clarification-prompt.tsx` - Missing info UI
+- `/components/chat/recovery-prompt.tsx` - AI misunderstanding recovery
 
 ### 3. Calendar Conflict Detection
 
@@ -196,6 +200,11 @@ This document maps the SkyWise case study requirements to their implementations 
 
 | Version | Date | Changes |
 |---------|------|---------|
-| 0.0.1 | Initial | Basic chat UI, mock APIs |
-| 0.0.2 | - | NLP, error handling, undo, trust, mobile, demo |
-| 0.0.3 | Current | Confidence microcopy, recovery flows, enhanced undo UX, 20 Figma screens (10 mobile + 10 desktop) |
+| 0.0.1 | Jan 2026 | Basic chat UI, mock APIs |
+| 0.0.2 | Jan 2026 | NLP, error handling, undo, trust, mobile, demo |
+| 0.0.3 | Jan 2026 | Confidence microcopy, recovery flows, enhanced undo UX, 20 Figma screens, tour system |
+| 0.0.4 | Jan 2026 | Trips dashboard, import wizard (auto + manual), docs pages, date picker, app icons, 43 Figma HTML screens with user flow diagrams |
+
+---
+
+*Last Updated: January 2026 (v0.0.4)*

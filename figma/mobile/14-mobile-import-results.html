@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=375, height=812">
+  <title>SkyWise - Import Results</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      width: 375px;
+      height: 812px;
+      background: #f8fafc;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      display: flex;
+      align-items: center;
+      padding: 16px 20px;
+      background: white;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    .back-btn { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; }
+    .back-btn svg { width: 20px; height: 20px; color: #64748b; }
+    .header-title { flex: 1; font-size: 17px; font-weight: 600; color: #0f172a; margin-left: 8px; }
+    .header-count { font-size: 13px; color: #64748b; }
+    main { flex: 1; padding: 16px 20px; overflow-y: auto; }
+    .flights-list { display: flex; flex-direction: column; gap: 12px; }
+    .flight-card { background: white; border-radius: 14px; border: 1px solid #e2e8f0; padding: 16px; }
+    .flight-source {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 12px; color: #64748b; margin-bottom: 12px;
+    }
+    .flight-source svg { width: 14px; height: 14px; }
+    .flight-main { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+    .airline-logo {
+      width: 40px; height: 40px;
+      background: #dbeafe;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 700; color: #0369a1;
+    }
+    .flight-info { flex: 1; }
+    .flight-info h3 { font-size: 15px; font-weight: 600; color: #0f172a; margin-bottom: 2px; }
+    .flight-info span { font-size: 13px; color: #64748b; }
+    .flight-route { text-align: right; }
+    .flight-route .route { font-size: 14px; font-weight: 600; color: #0f172a; }
+    .flight-route .date { font-size: 12px; color: #64748b; }
+    .confidence-badges { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+    .conf-badge {
+      display: flex; align-items: center; gap: 3px;
+      padding: 4px 8px; border-radius: 6px;
+      font-size: 11px; font-weight: 500;
+    }
+    .conf-badge.high { background: #d1fae5; color: #059669; }
+    .conf-badge.medium { background: #fef3c7; color: #d97706; }
+    .conf-badge svg { width: 10px; height: 10px; }
+    .flight-actions { display: flex; gap: 8px; }
+    .btn-dismiss {
+      flex: 1; padding: 10px;
+      background: white; border: 1px solid #e2e8f0; border-radius: 8px;
+      font-size: 13px; font-weight: 500; color: #64748b;
+      display: flex; align-items: center; justify-content: center; gap: 4px;
+    }
+    .btn-add {
+      flex: 1; padding: 10px;
+      background: #0ea5e9; border: none; border-radius: 8px;
+      font-size: 13px; font-weight: 500; color: white;
+      display: flex; align-items: center; justify-content: center; gap: 4px;
+    }
+    .btn-dismiss svg, .btn-add svg { width: 14px; height: 14px; }
+  </style>
+</head>
+<body>
+  <header>
+    <button class="back-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="15 18 9 12 15 6"/>
+      </svg>
+    </button>
+    <span class="header-title">Discovered Flights</span>
+    <span class="header-count">3 found</span>
+  </header>
+  <main>
+    <div class="flights-list">
+      <div class="flight-card">
+        <div class="flight-source">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+            <polyline points="22,6 12,13 2,6"/>
+          </svg>
+          Delta Airlines
+        </div>
+        <div class="flight-main">
+          <div class="airline-logo">DL</div>
+          <div class="flight-info">
+            <h3>DL 1247</h3>
+            <span>Delta Air Lines</span>
+          </div>
+          <div class="flight-route">
+            <div class="route">JFK → LAX</div>
+            <div class="date">Apr 5</div>
+          </div>
+        </div>
+        <div class="confidence-badges">
+          <span class="conf-badge high">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
+            Flight
+          </span>
+          <span class="conf-badge high">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
+            Date
+          </span>
+          <span class="conf-badge medium">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+            </svg>
+            Time
+          </span>
+        </div>
+        <div class="flight-actions">
+          <button class="btn-dismiss">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="18" y1="6" x2="6" y2="18"/>
+              <line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+            Dismiss
+          </button>
+          <button class="btn-add">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+              <line x1="16" y1="2" x2="16" y2="6"/>
+              <line x1="8" y1="2" x2="8" y2="6"/>
+            </svg>
+            Add
+          </button>
+        </div>
+      </div>
+      <div class="flight-card">
+        <div class="flight-source">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+            <polyline points="22,6 12,13 2,6"/>
+          </svg>
+          American Airlines
+        </div>
+        <div class="flight-main">
+          <div class="airline-logo">AA</div>
+          <div class="flight-info">
+            <h3>AA 892</h3>
+            <span>American Airlines</span>
+          </div>
+          <div class="flight-route">
+            <div class="route">ORD → MIA</div>
+            <div class="date">Apr 12</div>
+          </div>
+        </div>
+        <div class="confidence-badges">
+          <span class="conf-badge high">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
+            All verified
+          </span>
+        </div>
+        <div class="flight-actions">
+          <button class="btn-dismiss">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="18" y1="6" x2="6" y2="18"/>
+              <line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+            Dismiss
+          </button>
+          <button class="btn-add">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+              <line x1="16" y1="2" x2="16" y2="6"/>
+              <line x1="8" y1="2" x2="8" y2="6"/>
+            </svg>
+            Add
+          </button>
+        </div>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

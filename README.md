@@ -1,14 +1,17 @@
 # SkyWise - AI-Powered Travel Assistant
 
+**Version 0.0.4** | [Live Demo](/chat) | [Documentation](/docs)
+
 A Next.js application demonstrating an AI-powered airplane reservation chatbot with email and calendar integration. This is a fully functional case study implementation showcasing modern UX patterns for conversational AI interfaces.
 
 ## 🎯 Project Overview
 
 SkyWise is a conversational travel assistant that helps users:
 - **Search and book flights** using natural language
-- **Import trips from email** with AI-powered extraction
+- **Import trips from email** with AI-powered extraction (automatic and manual)
 - **Detect calendar conflicts** before booking
 - **Manage travel plans** with full control and reversibility
+- **View and manage trips** with dedicated trips dashboard
 
 ### Design Principles
 
@@ -75,27 +78,47 @@ SkyWise is a conversational travel assistant that helps users:
 ## 📁 Project Structure
 
 ```
-skywise-travel/
+skywise/
 ├── app/                      # Next.js App Router
 │   ├── api/                  # API Routes
 │   │   ├── flights/         # Flight search API
 │   │   ├── trips/           # Trip management API
 │   │   ├── calendar/        # Calendar conflict checking
+│   │   ├── conversations/   # Conversation history API
 │   │   └── email/           # Email import API
 │   ├── chat/                # Main chat interface
+│   ├── docs/                # Documentation pages (dynamic routes)
+│   │   ├── page.tsx         # Docs index
+│   │   └── [slug]/          # Individual doc pages
+│   ├── import/              # Email import wizard (auto + manual)
 │   ├── onboarding/          # Onboarding flow
+│   ├── presentation/        # Case study presentation
 │   ├── settings/            # Settings page
+│   ├── trips/               # Trips management dashboard
 │   ├── layout.tsx           # Root layout
 │   ├── page.tsx             # Landing page
+│   ├── icon.svg             # App icon
+│   ├── apple-icon.svg       # Apple touch icon
 │   └── globals.css          # Global styles
 ├── components/
 │   ├── chat/                # Chat components
 │   │   ├── chat-message.tsx
 │   │   ├── chat-input.tsx
-│   │   └── quick-reply-chips.tsx
+│   │   ├── clarification-prompt.tsx
+│   │   ├── confidence-indicator.tsx
+│   │   ├── empty-state.tsx
+│   │   ├── error-recovery.tsx
+│   │   ├── feature-card.tsx
+│   │   ├── inline-undo-prompt.tsx
+│   │   ├── quick-reply-chips.tsx
+│   │   ├── recovery-prompt.tsx
+│   │   ├── tour-overlay.tsx
+│   │   ├── tour-tooltip.tsx
+│   │   └── undo-action-preview.tsx
 │   ├── flights/             # Flight-related components
 │   │   ├── flight-card.tsx
 │   │   ├── trip-summary-card.tsx
+│   │   ├── trip-mini-card.tsx
 │   │   ├── imported-trip-card.tsx
 │   │   ├── conflict-card.tsx
 │   │   └── undo-toast.tsx
@@ -105,18 +128,52 @@ skywise-travel/
 │   │   └── bottom-sheet.tsx
 │   ├── onboarding/          # Onboarding components
 │   │   └── onboarding-step.tsx
+│   ├── trust/               # Trust & privacy components
+│   │   └── permission-explainer.tsx
 │   └── ui/                  # shadcn/ui components
+│       ├── button.tsx
+│       ├── card.tsx
+│       ├── date-picker.tsx  # Date picker component
+│       └── ...
 ├── hooks/                   # Custom React hooks
 │   ├── use-chat-state.ts
-│   └── use-toast.ts
+│   ├── use-responsive.ts
+│   ├── use-toast.ts
+│   └── use-tour.ts
 ├── lib/
+│   ├── ai/                  # AI processing layer
+│   │   ├── intent-parser.ts
+│   │   ├── conversation-context.ts
+│   │   ├── response-generator.ts
+│   │   └── misunderstanding-scenarios.ts
+│   ├── actions/             # Action management
+│   │   └── undo-manager.ts
+│   ├── demo/                # Demo scenarios
+│   │   └── scenario-runner.ts
+│   ├── email/               # Email processing
+│   │   ├── parser.ts
+│   │   └── mock-emails.ts
 │   ├── db/                  # Database configuration
 │   │   ├── index.ts
 │   │   └── schema.ts        # Drizzle schema
+│   ├── design-tokens.ts     # Design system tokens
+│   ├── tour-config.ts       # Tour configuration
 │   └── utils.ts             # Utility functions
-├── figma/                   # Figma HTML screens (20 total)
-│   ├── mobile/              # Mobile screens 01-10 (375×812px)
-│   └── desktop/             # Desktop screens 01-10 (1440×900px)
+├── docs/                    # Documentation
+│   ├── ARCHITECTURE.md
+│   ├── CASE_STUDY_MAPPING.md
+│   ├── COMPETITIVE_ANALYSIS.md
+│   ├── DESIGN_DECISIONS.md
+│   ├── INDEX.md
+│   ├── PERSONAS.md
+│   ├── USER_FLOWS.md
+│   └── UX_RESEARCH.md
+├── figma/                   # Figma HTML screens (43 total)
+│   ├── mobile/              # 18 mobile screens (00-17) + 3 user flows (375×812px)
+│   │   └── userflows/       # Mobile user flow diagrams
+│   ├── desktop/             # 18 desktop screens (00-17) + 4 user flows (1440×900px)
+│   │   └── userflows/       # Desktop user flow diagrams
+│   └── README.md            # Figma export documentation
 ├── drizzle.config.ts        # Drizzle configuration
 ├── tailwind.config.ts       # Tailwind configuration
 └── package.json
@@ -135,6 +192,7 @@ skywise-travel/
 - Quick-reply chips for common actions
 - Inline flight cards with calendar fit indicators
 - Real-time typing indicators
+- Onboarding tour with tooltips
 
 ### 3. Flight Booking
 - Flight comparison cards
@@ -142,13 +200,21 @@ skywise-travel/
 - Trip summary with calendar preview
 - One-click booking with undo support
 
-### 4. Email Import
-- Automatic flight detection
-- Confidence indicators on extracted data
+### 4. Email Import Wizard
+- **Automatic Discovery**: Scan connected email for flight confirmations
+- **Manual Entry**: Paste confirmation emails for AI extraction
+- Per-field confidence indicators
 - Inline editing for corrections
 - Add to calendar with preview
 
-### 5. Conflict Resolution
+### 5. Trips Dashboard
+- View all upcoming and completed trips
+- Filter by status (all/upcoming/completed)
+- Expandable flight details
+- Edit and cancel trip actions
+- Calendar sync status indicators
+
+### 6. Conflict Resolution
 - Visual timeline showing overlap
 - Multiple resolution options
 - Alternative flight suggestions
@@ -264,19 +330,6 @@ Most travel chatbots are glorified search boxes. SkyWise is designed around **tr
 
 ---
 
-## 🎯 For Interviewers
-
-This project demonstrates:
-- [x] AI-aware UX design (confidence, recovery flows)
-- [x] Trust & privacy considerations
-- [x] Mobile-first progressive disclosure
-- [x] Production-quality implementation
-- [x] Clear design rationale documentation
-
-See `/docs/INTERVIEW_TALKING_POINTS.md` for detailed design decisions.
-
----
-
 ## 🎯 Case Study Context
 
 This project was created as a design case study demonstrating:
@@ -287,10 +340,17 @@ This project was created as a design case study demonstrating:
 - **Structured Experience** - Progressive disclosure of complexity
 - **Production-Ready Code** - Real implementation, not just mockups
 
-## 📝 License
+---
 
-MIT License - feel free to use this as a template for your own projects.
+## 📋 Version History
+
+| Version | Date | Changes |
+|---------|------|---------|
+| 0.0.1 | Jan 2026 | Basic chat UI, mock APIs |
+| 0.0.2 | Jan 2026 | NLP, error handling, undo, trust, mobile, demo |
+| 0.0.3 | Jan 2026 | Confidence microcopy, recovery flows, enhanced undo UX, 20 Figma screens, tour system |
+| 0.0.4 | Jan 2026 | Trips dashboard, import wizard (auto + manual), docs pages, date picker, app icons, 43 Figma HTML screens with user flow diagrams |
 
 ---
 
-Built with ❤️ using Next.js, Bun, and Neon
+*Made for Efsora Labs by Cem Bilen*

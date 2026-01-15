@@ -1,5 +1,7 @@
 # SkyWise Architecture
 
+**Version 0.0.4** | January 2026
+
 ## Overview
 
 SkyWise is an AI-powered airplane reservation chatbot built with Next.js 15, TypeScript, and a trust-first design approach. The application provides a conversational interface for booking flights, importing confirmations from email, and managing travel schedules with calendar integration.
@@ -58,18 +60,23 @@ skywise/
 ├── app/                    # Next.js App Router pages
 │   ├── page.tsx           # Landing page
 │   ├── chat/page.tsx      # Main chat interface
+│   ├── docs/              # Documentation pages
+│   ├── import/            # Email import flow
 │   ├── onboarding/        # User onboarding flow
+│   ├── presentation/      # Case study presentation
 │   ├── settings/          # User settings
+│   ├── trips/             # Trips management
 │   └── api/               # API routes
-│       ├── flights/       # Flight search & booking
 │       ├── calendar/      # Calendar integration
+│       ├── conversations/ # Conversation history
 │       ├── email/         # Email import
+│       ├── flights/       # Flight search & booking
 │       └── trips/         # Trip management
 │
 ├── components/
 │   ├── ui/                # shadcn/ui base components
-│   ├── chat/              # Chat-specific components
-│   ├── flights/           # Flight display components
+│   ├── chat/              # Chat-specific components (13 files)
+│   ├── flights/           # Flight display components (6 files)
 │   ├── layout/            # App structure components
 │   ├── onboarding/        # Onboarding components
 │   └── trust/             # Privacy/trust components
@@ -77,19 +84,22 @@ skywise/
 ├── hooks/                 # Custom React hooks
 │   ├── use-chat-state.ts # Conversation state
 │   ├── use-responsive.ts # Responsive breakpoints
-│   └── use-toast.ts      # Toast notifications
+│   ├── use-toast.ts      # Toast notifications
+│   └── use-tour.ts       # Onboarding tour state
 │
 ├── lib/
 │   ├── ai/               # AI processing layer
 │   │   ├── intent-parser.ts
 │   │   ├── conversation-context.ts
-│   │   └── response-generator.ts
+│   │   ├── response-generator.ts
+│   │   └── misunderstanding-scenarios.ts
 │   │
 │   ├── actions/          # Action management
 │   │   └── undo-manager.ts
 │   │
 │   ├── email/            # Email processing
 │   │   ├── parser.ts
+│   │   ├── index.ts
 │   │   └── mock-emails.ts
 │   │
 │   ├── demo/             # Demo scenarios
@@ -103,9 +113,10 @@ skywise/
 │   │   └── index.ts
 │   │
 │   ├── design-tokens.ts  # Design system tokens
+│   ├── tour-config.ts    # Tour configuration
 │   └── utils.ts          # Utility functions
 │
-└── docs/                 # Documentation
+└── docs/                 # Documentation (9 MD files)
 ```
 
 ## Data Flow
@@ -164,7 +175,7 @@ User Input
      Complete
 ```
 
-### Email Import Flow
+### Email Import Flow (Chat-based)
 
 ```
 User: "Import from email"
@@ -200,13 +211,52 @@ User: "Import from email"
 └─────────────────┘
 ```
 
+### Import Wizard Flow (v0.0.4 - Standalone Page)
+
+```
+/import page
+         │
+         ▼
+┌─────────────────┐
+│ Choose Method   │ ──→ Automatic Discovery or Manual Entry
+└────────┬────────┘
+         │
+    ┌────┴────┐
+    │         │
+    ▼         ▼
+┌───────┐  ┌───────┐
+│ Auto  │  │Manual │
+│ Scan  │  │ Paste │
+└───┬───┘  └───┬───┘
+    │          │
+    ▼          ▼
+┌───────────────────┐
+│ Discovered Flights│ ←──→ Paste email text
+└────────┬──────────┘
+         │
+         ▼
+┌─────────────────┐
+│ Select Flight   │ ──→ Show confidence badges per field
+└────────┬────────┘
+         │
+         ▼
+┌─────────────────┐
+│ Review & Edit   │ ──→ Inline editing for corrections
+└────────┬────────┘
+         │
+         ▼
+┌─────────────────┐
+│ Add to Trips    │ ──→ Success + redirect to /trips
+└─────────────────┘
+```
+
 ## API Reference
 
 ### Flight API
 
 ```typescript
 // Search flights
-GET /api/flights?origin=JFK&destination=SFO&date=2025-01-21
+GET /api/flights?origin=JFK&destination=SFO&date=2026-01-21
 
 // Search with full options
 POST /api/flights
@@ -240,7 +290,7 @@ POST /api/calendar
 }
 
 // Get events
-GET /api/calendar?start=2025-01-01&end=2025-01-31
+GET /api/calendar?start=2026-01-01&end=2026-01-31
 ```
 
 ### Email API
@@ -262,6 +312,22 @@ POST /api/email
   action: 'dismiss';
   emailId: string;
 }
+```
+
+### Conversations API
+
+```typescript
+// Get conversation history
+GET /api/conversations
+
+// Create new conversation
+POST /api/conversations
+{
+  userId: string;
+}
+
+// Get messages for conversation
+GET /api/conversations/:id/messages
 ```
 
 ## Design System
@@ -302,6 +368,22 @@ Design tokens are centralized in `/lib/design-tokens.ts`:
 - `RecoveryPrompt`: Handles AI misunderstandings with correction options
 - `InlineUndoPrompt`: Context-aware undo prompts within chat
 - `UndoActionPreview`: Enhanced undo with affected items list
+- `EmptyState`: Welcome state for new conversations
+- `FeatureCard`: Feature highlight cards
+- `TourOverlay`: Full-screen onboarding tour overlay
+- `TourTooltip`: Positioned tooltips for tour steps
+- `TripMiniCard`: Compact trip display card
+- `ErrorRecovery`: Error recovery UI with retry options
+
+### v0.0.4 Pages & Components
+
+**New Pages:**
+- `/trips`: Full trips dashboard with filter, expand, edit, cancel
+- `/import`: Import wizard with automatic discovery and manual paste modes
+- `/docs/[slug]`: Dynamic documentation pages
+
+**New Components:**
+- `DatePicker`: Calendar-based date selection component
 
 ## State Management
 
@@ -310,6 +392,7 @@ Local React state is used throughout:
 - `useChatState`: Conversation messages and step
 - `useUndo`: Undo manager hook
 - `useResponsive`: Breakpoint detection
+- `useTour`: Onboarding tour state management
 
 ## Security Considerations
 
@@ -324,6 +407,45 @@ Local React state is used throughout:
 2. **Lazy loading**: Components loaded on demand
 3. **Animation optimization**: Framer Motion with spring physics
 4. **Responsive images**: Optimized for different screen sizes
+
+## Figma HTML Screens
+
+The `/figma` directory contains 43 self-contained HTML files for Figma import:
+
+### Structure
+```
+figma/
+├── mobile/                    # Mobile screens (375 × 812px)
+│   ├── 00-17 screens          # 18 screens
+│   └── userflows/             # 3 user flow diagrams
+├── desktop/                   # Desktop screens (1440 × 900px)
+│   ├── 00-17 screens          # 18 screens
+│   └── userflows/             # 4 user flow diagrams
+└── README.md
+```
+
+### Screens (00-17)
+| # | Screen |
+|---|--------|
+| 00 | Landing Page |
+| 01-03 | Onboarding (Welcome, Email, Calendar) |
+| 04 | Chat Empty |
+| 05 | Flight Options |
+| 06 | Trip Summary |
+| 07 | Conflict Detection |
+| 08 | Email Import |
+| 09 | Success + Undo |
+| 10 | Chat Full |
+| 11 | Trips Dashboard |
+| 12-15 | Import Wizard (Choose, Scanning, Results, Success) |
+| 16 | Settings |
+| 17 | Documentation |
+
+### User Flow Diagrams
+- **Onboarding Flow**: 4-5 steps (desktop: 4800×1000px, mobile: 2400×920px)
+- **Booking Flow**: 4-5 steps (desktop: 5600×1000px, mobile: 2800×920px)
+- **Import Flow**: 4 steps (desktop: 4800×1000px, mobile: 2400×920px)
+- **Conflict Flow**: 3 steps (desktop only: 3200×1000px)
 
 ## Future Considerations
 

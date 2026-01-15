@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=2400, height=920">
+  <title>SkyWise - Import User Flow (Mobile)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      width: 2400px;
+      height: 920px;
+      background: #f1f5f9;
+      padding: 40px;
+      display: flex;
+      align-items: flex-start;
+      gap: 40px;
+    }
+    .flow-container { display: flex; align-items: center; gap: 40px; }
+    .flow-step { display: flex; flex-direction: column; align-items: center; }
+    .step-label {
+      background: #8b5cf6; color: white;
+      padding: 6px 14px; border-radius: 16px;
+      font-size: 12px; font-weight: 600; margin-bottom: 12px;
+    }
+    .phone-frame {
+      width: 375px; height: 812px;
+      background: #1e293b;
+      border-radius: 44px;
+      padding: 12px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+    }
+    .phone-screen {
+      width: 100%; height: 100%;
+      background: #f8fafc;
+      border-radius: 36px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .arrow { display: flex; align-items: center; color: #94a3b8; }
+    .arrow svg { width: 32px; height: 32px; }
+    .step-notes { margin-top: 10px; font-size: 11px; color: #64748b; text-align: center; max-width: 140px; }
+    /* Header */
+    .header {
+      display: flex; align-items: center;
+      padding: 16px 20px; background: white;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    .back-btn { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; }
+    .back-btn svg { width: 20px; height: 20px; color: #64748b; }
+    .header-title { flex: 1; font-size: 17px; font-weight: 600; color: #0f172a; margin-left: 8px; }
+    .header-count { font-size: 13px; color: #64748b; }
+    .logo { display: flex; align-items: center; gap: 8px; }
+    .logo-icon {
+      width: 32px; height: 32px;
+      background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);
+      border-radius: 8px; display: flex; align-items: center; justify-content: center;
+    }
+    .logo-icon svg { width: 16px; height: 16px; color: white; }
+    .logo-text { font-size: 18px; font-weight: 700; color: #0f172a; }
+    /* Import Choice */
+    .import-content { flex: 1; padding: 24px 20px; }
+    .import-header { text-align: center; margin-bottom: 28px; }
+    .import-header h1 { font-size: 24px; font-weight: 700; color: #0f172a; margin-bottom: 8px; }
+    .import-header p { font-size: 14px; color: #64748b; }
+    .method-card {
+      display: flex; align-items: center; gap: 16px;
+      padding: 18px; background: white;
+      border: 2px solid #e2e8f0; border-radius: 14px;
+      margin-bottom: 12px;
+    }
+    .method-card.selected { border-color: #0ea5e9; background: #f0f9ff; }
+    .method-icon {
+      width: 48px; height: 48px; background: #f0f9ff;
+      border-radius: 12px; display: flex; align-items: center; justify-content: center;
+    }
+    .method-icon svg { width: 24px; height: 24px; color: #0ea5e9; }
+    .method-info { flex: 1; }
+    .method-info h3 { font-size: 16px; font-weight: 600; color: #0f172a; margin-bottom: 4px; }
+    .method-info p { font-size: 13px; color: #64748b; }
+    .recommended-badge {
+      background: #d1fae5; color: #059669;
+      padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: 500;
+    }
+    /* Scanning */
+    .scan-content {
+      flex: 1; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; padding: 40px;
+    }
+    .scan-icon {
+      width: 80px; height: 80px; background: #f0f9ff;
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      margin-bottom: 24px; position: relative;
+    }
+    .scan-icon svg { width: 40px; height: 40px; color: #0ea5e9; }
+    .scan-ring {
+      position: absolute; inset: -6px;
+      border: 3px solid #0ea5e9; border-radius: 50%;
+      border-top-color: transparent;
+    }
+    .scan-content h2 { font-size: 22px; font-weight: 700; color: #0f172a; margin-bottom: 8px; }
+    .scan-content p { font-size: 15px; color: #64748b; }
+    /* Results */
+    .results-list { flex: 1; padding: 16px 20px; overflow-y: auto; }
+    .flight-result {
+      background: white; border: 1px solid #e2e8f0;
+      border-radius: 14px; padding: 16px; margin-bottom: 12px;
+    }
+    .result-source {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 12px; color: #64748b; margin-bottom: 12px;
+    }
+    .result-source svg { width: 14px; height: 14px; }
+    .result-main { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+    .airline-logo {
+      width: 40px; height: 40px; background: #dbeafe;
+      border-radius: 10px; display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 700; color: #0369a1;
+    }
+    .result-info h4 { font-size: 15px; font-weight: 600; color: #0f172a; }
+    .result-info span { font-size: 13px; color: #64748b; }
+    .result-route { font-size: 14px; font-weight: 600; color: #0f172a; text-align: right; }
+    .result-date { font-size: 12px; color: #64748b; text-align: right; }
+    .confidence-badges { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+    .conf-badge {
+      display: flex; align-items: center; gap: 3px;
+      padding: 5px 10px; border-radius: 6px;
+      font-size: 11px; font-weight: 500;
+    }
+    .conf-badge.high { background: #d1fae5; color: #059669; }
+    .conf-badge.medium { background: #fef3c7; color: #d97706; }
+    .conf-badge svg { width: 11px; height: 11px; }
+    .result-actions { display: flex; gap: 10px; }
+    .btn-dismiss, .btn-add {
+      flex: 1; padding: 12px; border-radius: 10px;
+      font-size: 14px; font-weight: 500;
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+    }
+    .btn-dismiss { background: white; border: 1px solid #e2e8f0; color: #64748b; }
+    .btn-add { background: #0ea5e9; border: none; color: white; }
+    .btn-dismiss svg, .btn-add svg { width: 16px; height: 16px; }
+    /* Success */
+    .success-content {
+      flex: 1; display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      padding: 40px 24px;
+    }
+    .success-icon {
+      width: 72px; height: 72px; background: #d1fae5;
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      margin-bottom: 20px;
+    }
+    .success-icon svg { width: 36px; height: 36px; color: #059669; }
+    .success-content h2 { font-size: 24px; font-weight: 700; color: #0f172a; margin-bottom: 8px; text-align: center; }
+    .success-content p { font-size: 15px; color: #64748b; margin-bottom: 32px; text-align: center; line-height: 1.5; }
+    .actions { width: 100%; display: flex; flex-direction: column; gap: 12px; }
+    .btn-primary {
+      width: 100%; padding: 16px;
+      background: #0ea5e9; border: none; border-radius: 12px;
+      font-size: 15px; font-weight: 600; color: white;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .btn-primary svg { width: 18px; height: 18px; }
+    .btn-secondary {
+      width: 100%; padding: 16px;
+      background: white; border: 2px solid #e2e8f0; border-radius: 12px;
+      font-size: 15px; font-weight: 600; color: #475569;
+    }
+    /* Bottom Nav */
+    .bottom-nav {
+      display: flex; background: white;
+      border-top: 1px solid #e2e8f0;
+      padding: 8px 0 24px;
+    }
+    .nav-item {
+      flex: 1; display: flex; flex-direction: column;
+      align-items: center; gap: 4px; padding: 8px;
+    }
+    .nav-item svg { width: 24px; height: 24px; color: #94a3b8; }
+    .nav-item span { font-size: 11px; color: #94a3b8; }
+    .nav-item.active svg { color: #0ea5e9; }
+    .nav-item.active span { color: #0ea5e9; font-weight: 500; }
+  </style>
+</head>
+<body>
+  <div class="flow-container">
+    <!-- Step 1: Choose -->
+    <div class="flow-step">
+      <span class="step-label">1. Choose Method</span>
+      <div class="phone-frame">
+        <div class="phone-screen">
+          <div class="header">
+            <div class="logo">
+              <div class="logo-icon">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/>
+                </svg>
+              </div>
+              <span class="logo-text">SkyWise</span>
+            </div>
+          </div>
+          <div class="import-content">
+            <div class="import-header">
+              <h1>Import Flights</h1>
+              <p>Add flights from email or manually</p>
+            </div>
+            <div class="method-card selected">
+              <div class="method-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                  <polyline points="22,6 12,13 2,6"/>
+                </svg>
+              </div>
+              <div class="method-info">
+                <h3>Auto-Scan Email</h3>
+                <p>Scan Gmail for confirmations</p>
+              </div>
+              <span class="recommended-badge">Best</span>
+            </div>
+            <div class="method-card">
+              <div class="method-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="12" y1="5" x2="12" y2="19"/>
+                  <line x1="5" y1="12" x2="19" y2="12"/>
+                </svg>
+              </div>
+              <div class="method-info">
+                <h3>Add Manually</h3>
+                <p>Enter flight details</p>
+              </div>
+            </div>
+          </div>
+          <nav class="bottom-nav">
+            <div class="nav-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+              </svg>
+              <span>Chat</span>
+            </div>
+            <div class="nav-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              </svg>
+              <span>Trips</span>
+            </div>
+            <div class="nav-item active">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+              </svg>
+              <span>Import</span>
+            </div>
+            <div class="nav-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="3"/>
+              </svg>
+              <span>Settings</span>
+            </div>
+          </nav>
+        </div>
+      </div>
+      <p class="step-notes">Auto or manual import</p>
+    </div>
+
+    <div class="arrow">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="5" y1="12" x2="19" y2="12"/>
+        <polyline points="12 5 19 12 12 19"/>
+      </svg>
+    </div>
+
+    <!-- Step 2: Scanning -->
+    <div class="flow-step">
+      <span class="step-label">2. Scanning</span>
+      <div class="phone-frame">
+        <div class="phone-screen">
+          <div class="header">
+            <div class="logo">
+              <div class="logo-icon">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/>
+                </svg>
+              </div>
+              <span class="logo-text">SkyWise</span>
+            </div>
+          </div>
+          <div class="scan-content">
+            <div class="scan-icon">
+              <div class="scan-ring"></div>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"/>
+                <path d="m21 21-4.35-4.35"/>
+              </svg>
+            </div>
+            <h2>Scanning Email</h2>
+            <p>Looking for flights...</p>
+          </div>
+          <nav class="bottom-nav">
+            <div class="nav-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+              </svg>
+              <span>Chat</span>
+            </div>
+            <div class="nav-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              </svg>
+              <span>Trips</span>
+            </div>
+            <div class="nav-item active">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+              </svg>
+              <span>Import</span>
+            </div>
+            <div class="nav-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="3"/>
+              </svg>
+              <span>Settings</span>
+            </div>
+          </nav>
+        </div>
+      </div>
+      <p class="step-notes">Read-only email access</p>
+    </div>
+
+    <div class="arrow">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="5" y1="12" x2="19" y2="12"/>
+        <polyline points="12 5 19 12 12 19"/>
+      </svg>
+    </div>
+
+    <!-- Step 3: Results -->
+    <div class="flow-step">
+      <span class="step-label">3. Review Results</span>
+      <div class="phone-frame">
+        <div class="phone-screen">
+          <div class="header">
+            <button class="back-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="15 18 9 12 15 6"/>
+              </svg>
+            </button>
+            <span class="header-title">Discovered Flights</span>
+            <span class="header-count">2 found</span>
+          </div>
+          <div class="results-list">
+            <div class="flight-result">
+              <div class="result-source">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                  <polyline points="22,6 12,13 2,6"/>
+                </svg>
+                Delta Airlines
+              </div>
+              <div class="result-main">
+                <div class="airline-logo">DL</div>
+                <div class="result-info">
+                  <h4>DL 1247</h4>
+                  <span>Delta Air Lines</span>
+                </div>
+                <div style="margin-left: auto;">
+                  <div class="result-route">JFK → LAX</div>
+                  <div class="result-date">Apr 5</div>
+                </div>
+              </div>
+              <div class="confidence-badges">
+                <span class="conf-badge high">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="20 6 9 17 4 12"/>
+                  </svg>
+                  Flight
+                </span>
+                <span class="conf-badge high">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="20 6 9 17 4 12"/>
+                  </svg>
+                  Date
+                </span>
+                <span class="conf-badge medium">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"/>
+                    <line x1="12" y1="8" x2="12" y2="12"/>
+                    <line x1="12" y1="16" x2="12.01" y2="16"/>
+                  </svg>
+                  Time
+                </span>
+              </div>
+              <div class="result-actions">
+                <button class="btn-dismiss">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"/>
+                    <line x1="6" y1="6" x2="18" y2="18"/>
+                  </svg>
+                  Dismiss
+                </button>
+                <button class="btn-add">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="20 6 9 17 4 12"/>
+                  </svg>
+                  Add
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="step-notes">Confidence indicators</p>
+    </div>
+
+    <div class="arrow">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="5" y1="12" x2="19" y2="12"/>
+        <polyline points="12 5 19 12 12 19"/>
+      </svg>
+    </div>
+
+    <!-- Step 4: Success -->
+    <div class="flow-step">
+      <span class="step-label">4. Imported!</span>
+      <div class="phone-frame">
+        <div class="phone-screen">
+          <div class="success-content">
+            <div class="success-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+            </div>
+            <h2>Flight Imported!</h2>
+            <p>Your flight has been added to My Trips and synced with your calendar.</p>
+            <div class="actions">
+              <button class="btn-primary">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                  <polyline points="14 2 14 8 20 8"/>
+                </svg>
+                View My Trips
+              </button>
+              <button class="btn-secondary">Import Another</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="step-notes">Added & calendar synced</p>
+    </div>
+  </div>
+</body>
+</html>

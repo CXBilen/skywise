@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import { AnimatePresence } from "framer-motion";
 import { Plane, Mail, Calendar, MapPin, Check } from "lucide-react";
 import { OnboardingStep } from "@/components/onboarding/onboarding-step";
+import { AppHeader } from "@/components/layout/app-header";
+import Link from "next/link";
 
 type Step = "welcome" | "email" | "calendar" | "preferences" | "complete";
 
@@ -42,9 +44,12 @@ export default function OnboardingPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-sky-50 via-white to-amber-50">
-      <AnimatePresence mode="wait">
-        {currentStep === "welcome" && (
+    <div className="min-h-screen bg-gradient-to-br from-sky-50 via-white to-amber-50 flex flex-col">
+      <AppHeader />
+
+      <main className="flex-1 pt-24">
+        <AnimatePresence mode="wait">
+          {currentStep === "welcome" && (
           <OnboardingStep
             key="welcome"
             icon={<Plane className="h-10 w-10" />}
@@ -166,6 +171,28 @@ export default function OnboardingPage() {
           />
         )}
       </AnimatePresence>
+      </main>
+
+      {/* Footer */}
+      <footer className="relative z-10 border-t border-slate-200/60 bg-white/50 backdrop-blur-sm">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+            <div className="flex items-center gap-2">
+              <Plane className="h-5 w-5 text-sky-500" />
+              <span className="font-semibold text-slate-900">SkyWise</span>
+            </div>
+            <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4 text-sm text-slate-500 text-center">
+              <div className="flex items-center gap-4">
+                <Link href="/presentation" className="hover:text-sky-500 transition-colors">Presentation</Link>
+                <span>•</span>
+                <Link href="/docs" className="hover:text-sky-500 transition-colors">Documentation</Link>
+              </div>
+              <span className="hidden sm:inline">•</span>
+              <span className="text-xs sm:text-sm">Made for Efsora Labs by Cem Bilen</span>
+            </div>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }
